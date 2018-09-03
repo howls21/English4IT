@@ -5,15 +5,15 @@
     <div class="modal-content">
       <div class="input-field col s6">
         <input type="text" class="validate" maxlength="100" required  id="examname">
-        <label for="examname">exam Name</label>
+        <label for="examname">EXAM NAME</label>
       </div>
       <div class="input-field col s6">
         <textarea id="descriptionleftexam" class="materialize-textarea validate" required maxlength="500"></textarea>
-        <label for="descriptionleftexam">DESCRIPTION exam LEFT</label>
+        <label for="descriptionleftexam">DESCRIPTION EXAM LEFT</label>
       </div>
       <div class="input-field col s6">
         <textarea id="descriptionrightexam" class="materialize-textarea validate" required maxlength="500"></textarea>
-        <label for="descriptionrightexam">DESCRIPTION exam RIGHT</label>
+        <label for="descriptionrightexam">DESCRIPTION EXAM RIGHT</label>
       </div>
 
     </div>

@@ -25,10 +25,10 @@
           <div class="col s12 m3">
             <ul class="collapsible popout" data-collapsible="accordion">
                 <li>
-                  <div class="collapsible-header" onclick="sectionlist()"><i class="material-icons">dehaze</i>SECTION</div>
+                  <div class="collapsible-header" onclick="classlist()"><i class="material-icons">class</i>COURSES</div>
                 </li>
                 <li>
-                  <div class="collapsible-header" onclick="classlist()"><i class="material-icons">class</i>COURSES</div>
+                  <div class="collapsible-header" onclick="sectionlist()"><i class="material-icons">dehaze</i>SECTION</div>
                 </li>
                 <li>
                   <div class="collapsible-header" onclick="studentlist()"><i class="material-icons">face</i>STUDENTS</div>
@@ -38,6 +38,9 @@
                 </li>
                 <li>
                   <div class="collapsible-header" onclick="activitylist()"><i class="material-icons">extension</i>ACTIVITIES</div>
+                </li>
+                <li>
+                  <div class="collapsible-header" onclick="examlist()"><i class="material-icons">done_all</i>Exam</div>
                 </li>
                 <li>
                   <div class="collapsible-header" onclick="questionlist()"><i class="material-icons">question_answer</i>QUESTIONS AND ANSWERS</div>

@@ -1,6 +1,6 @@
-<div class="card-panel z-depth-5">
+  <?php $checkcount = 0?>
   <a class="modal-trigger btn waves-effect waves-green grey darken-3" href="#NewSection"><i class="material-icons right">add_box</i><strong> New Section</strong></a>
-  <button class="btn modal-trigger" href="#sectionhasclass"><i class="material-icons right">playlist_add_check</i> Add Section to Class</button>
+  <button class="btn modal-trigger blue-grey" href="#sectionhasclass"><i class="material-icons right"><div class="chip" ><img src="img/class.png" alt="Contact Person"></div></i><i class="material-icons right">keyboard_tab</i>SECTION AS CLASS</button>
   <!-- MODALs News-->
   <div id="NewSection" class="modal modal-fixed-footer">
       <div class="modal-content">
@@ -20,26 +20,26 @@
         <a href="#!" class="modal-action modal-close btn waves-effect waves-green green darken-1" onclick="savesection()"><i class="material-icons right">save</i><strong> Save</strong></a>
       </div>
   </div>
+</div>
+
 
 <p class=""><input type="checkbox" class="filled-in" id="sectioncheckedall"/>
 <label for="sectioncheckedall">Check all</label></p>
-    <div class="card-panel z-depth-3">
         <div id="check">
+          <br>
                 <?php if ($section == 0): ?><p>Don't section!</p><?php else: ?>
                   <?php $i = 0; foreach ($section as $fila):?>
                   <?php $checkcount = $i?>
-                          <div class="row">
-                            <div class="col s12 m6">
-                              <div class="card blue-grey lighten-5 z-depth-5">
+                          
+                            <div class="col s12 m8 l5 ">
+                              <div class="card blue-grey lighten-5 z-depth-3">
                                 <div class="card-content">
                                   <p>
                                     <input type="checkbox" id="selectsection<?php echo $i?>"/>
                                     <label for="selectsection<?php echo $i?>">Select </label></p>
-                                  <span class="card-title"><strong>Section</strong></span>
-                                  <blockquote>
-                                    <?php echo $fila->sectionname ?>
-                                  </blockquote>
-                                  <blockquote>
+                                    <br>
+                                  <span class="card-title">SECTION : <strong><?php echo $fila->sectionname ?></strong></span>
+                                  <blockquote>DESCRIPTION: 
                                     <?php echo $fila->description ?>
                                   </blockquote>
                                     <?php $o = 0; foreach ($section_has_class as $filshc):?>
@@ -60,12 +60,12 @@
                                     <?php $o++; endforeach;?>
                                 </div>
                                 <div class="card-action">
-                                  <button class="modal-trigger btn waves-effect waves-green grey lighten-3 black-text" id="btneditclasstable<?php echo $i ?>" style="cursor: pointer;" href="#Modal_edit_class<?php echo $i ?>" data-tooltip="Edit Class"><i class="material-icons right">edit</i>Edit</button>
-                                  <button class="btn modal-trigger red" id="btnclassdeletemodal<?php echo $i ?>" style="cursor: pointer;" href="#Modal_delete_class<?php echo $i ?>" data-tooltip="Delete Class"><i class="material-icons right">delete</i>Delete</button>
+                                  <button class="modal-trigger btn waves-effect waves-green white lighten-3 black-text" id="btneditclasstable<?php echo $i ?>" style="cursor: pointer;" href="#Modal_edit_class<?php echo $i ?>" data-tooltip="Edit Class"><i class="material-icons right">edit</i>Edit</button>
+                                  <button class="btn modal-trigger waves-effect waves-red  white red-text" id="btnclassdeletemodal<?php echo $i ?>" style="cursor: pointer;" href="#Modal_delete_class<?php echo $i ?>" data-tooltip="Delete Class"><i class="material-icons right">delete</i>Delete</button>
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          
 
 
                     <div class="modal modal-fixed-footer" tabindex="-1" role="dialog" id="Modal_edit_class<?php echo $i ?>">
@@ -111,8 +111,7 @@
 
                   <?php $i++; endforeach; ?>
                 <?php endif; ?>
-        </div> 
-        </div>
+      </div>
             <!-- MODALs News-->
             <div id="sectionhasclass" class="modal modal-fixed-footer">
                 <div class="modal-content">
@@ -131,9 +130,6 @@
                   <button id="btnsectionclass" class="modal-action modal-close btn waves-effect waves-green green darken-1" onclick="sectionhasclass(<?php echo $checkcount?>)"><i class="material-icons right">save</i><strong> Save</strong></button>
                 </div>
             </div>
-
-    </div>
-</div>
 
 <!-- Llamados a Js Visuales -->
 <script type="text/javascript">

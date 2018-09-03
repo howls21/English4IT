@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 12-03-2018 a las 02:36:32
--- Versión del servidor: 10.1.30-MariaDB
--- Versión de PHP: 5.6.33
+-- Host: localhost
+-- Generation Time: Aug 22, 2018 at 06:37 AM
+-- Server version: 10.1.31-MariaDB
+-- PHP Version: 5.6.34
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,39 +19,76 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `e4it`
+-- Database: `e4it`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `activity`
+-- Table structure for table `activity`
 --
 
 CREATE TABLE `activity` (
   `idactivity` int(11) NOT NULL,
-  `activityname` varchar(45) NOT NULL,
-  `descriptionleft` varchar(45) DEFAULT NULL,
-  `descriptionright` varchar(45) DEFAULT NULL,
-  `unity_idunity` int(11) NOT NULL,
-  `unity_class_idclass` int(11) NOT NULL,
-  `unity_class_teacher_idteacher` int(11) NOT NULL,
-  `material_idmaterial` int(11) NOT NULL,
-  `material_materialtype_idmaterialtype` int(11) NOT NULL
+  `activityname` varchar(100) NOT NULL,
+  `descriptionleft` varchar(500) DEFAULT NULL,
+  `descriptionright` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `activity`
+-- Dumping data for table `activity`
 --
 
-INSERT INTO `activity` (`idactivity`, `activityname`, `descriptionleft`, `descriptionright`, `unity_idunity`, `unity_class_idclass`, `unity_class_teacher_idteacher`, `material_idmaterial`, `material_materialtype_idmaterialtype`) VALUES
-(2, 'Whats is a best smartphone?', 'resolve cuestion an anwer', '', 2, 5, 1, 1, 4),
-(3, 'Wach the video and respounse the answers', '', '', 3, 1, 1, 2, 4);
+INSERT INTO `activity` (`idactivity`, `activityname`, `descriptionleft`, `descriptionright`) VALUES
+(2, 'Shopping PC', '1.In this  section  you  will  learn  how  to:  1.1.Simple  Present  Tense  1.2.Plural  nouns', '2.In  this  section  you  will  also  learn vocabulary  related  to:2.2.  Basic  Vocabulary  related  to  programming ');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `answer`
+-- Table structure for table `activity_has_unity`
+--
+
+CREATE TABLE `activity_has_unity` (
+  `activity_idactivity` int(11) NOT NULL,
+  `unity_idunity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `activity_has_unity`
+--
+
+INSERT INTO `activity_has_unity` (`activity_idactivity`, `unity_idunity`) VALUES
+(2, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `administrator`
+--
+
+CREATE TABLE `administrator` (
+  `idadministrator` int(11) NOT NULL,
+  `idnumber` varchar(10) DEFAULT NULL,
+  `name` varchar(45) NOT NULL,
+  `lastname` varchar(45) NOT NULL,
+  `username` varchar(45) DEFAULT NULL,
+  `password` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `role_idrole` int(11) NOT NULL,
+  `gender_idgender` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `administrator`
+--
+
+INSERT INTO `administrator` (`idadministrator`, `idnumber`, `name`, `lastname`, `username`, `password`, `email`, `role_idrole`, `gender_idgender`) VALUES
+(2, '222222222', 'Admin', 'Admin', 'admin', '202cb962ac59075b964b07152d234b70', 'admin@admin.cl', 4, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `answer`
 --
 
 CREATE TABLE `answer` (
@@ -65,30 +102,29 @@ CREATE TABLE `answer` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `class`
+-- Table structure for table `class`
 --
 
 CREATE TABLE `class` (
   `idclass` int(11) NOT NULL,
   `classname` varchar(45) NOT NULL,
-  `descriptioncenter` varchar(200) NOT NULL,
+  `descriptioncenter` varchar(200) DEFAULT NULL,
   `descriptionleft` varchar(200) DEFAULT NULL,
-  `descriptionright` varchar(200) DEFAULT NULL,
-  `teacher_idteacher` int(11) NOT NULL
+  `descriptionright` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `class`
+-- Dumping data for table `class`
 --
 
-INSERT INTO `class` (`idclass`, `classname`, `descriptioncenter`, `descriptionleft`, `descriptionright`, `teacher_idteacher`) VALUES
-(1, 'English 4 IT', 'INFORMATION TECNOLOGIES', '', '', 1),
-(5, 'SNAP DRAGON PTE', 'VEST DIVICE', 'TESLA MOTOR', 'BIOTECNOLOGY', 1);
+INSERT INTO `class` (`idclass`, `classname`, `descriptioncenter`, `descriptionleft`, `descriptionright`) VALUES
+(2, 'English II', '', '', ''),
+(4, 'English III', '', '', '');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `coordinator`
+-- Table structure for table `coordinator`
 --
 
 CREATE TABLE `coordinator` (
@@ -103,41 +139,34 @@ CREATE TABLE `coordinator` (
   `gender_idgender` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `coordinator`
---
-
-INSERT INTO `coordinator` (`idcoordinator`, `idnumber`, `name`, `lastname`, `username`, `password`, `email`, `role_idrole`, `gender_idgender`) VALUES
-(1, '66666666-6', 'David', 'Maldonado Briones', 'dama', '202cb962ac59075b964b07152d234b70', 'david@gmail.com', 3, 1);
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `exam`
+-- Table structure for table `exam`
 --
 
 CREATE TABLE `exam` (
   `idexam` int(11) NOT NULL,
   `examname` varchar(45) NOT NULL,
-  `date` date NOT NULL,
-  `state` int(11) NOT NULL
+  `descriptionleft` varchar(200) DEFAULT NULL,
+  `descriptionright` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `exam_has_record`
+-- Table structure for table `exam_has_unity`
 --
 
-CREATE TABLE `exam_has_record` (
+CREATE TABLE `exam_has_unity` (
   `exam_idexam` int(11) NOT NULL,
-  `record_idrecord` int(11) NOT NULL
+  `unity_idunity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `gender`
+-- Table structure for table `gender`
 --
 
 CREATE TABLE `gender` (
@@ -146,17 +175,17 @@ CREATE TABLE `gender` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `gender`
+-- Dumping data for table `gender`
 --
 
 INSERT INTO `gender` (`idgender`, `name`) VALUES
-(1, 'male'),
-(2, 'female');
+(3, 'Male'),
+(4, 'Female');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `glosary`
+-- Table structure for table `glosary`
 --
 
 CREATE TABLE `glosary` (
@@ -166,42 +195,43 @@ CREATE TABLE `glosary` (
   `aditionaldescription` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `glosary`
---
-
-INSERT INTO `glosary` (`idglosary`, `wordname`, `description`, `aditionaldescription`) VALUES
-(6, 'Potato', 'Patata', 'En Chile, Papa.');
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `log`
+-- Table structure for table `log`
 --
 
 CREATE TABLE `log` (
   `idlog` int(11) NOT NULL,
-  `start` date DEFAULT NULL,
-  `end` date DEFAULT NULL
+  `start` datetime DEFAULT NULL,
+  `end` datetime DEFAULT NULL,
+  `username` varchar(45) NOT NULL,
+  `role_idrole` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `log`
+--
+
+INSERT INTO `log` (`idlog`, `start`, `end`, `username`, `role_idrole`) VALUES
+(1, '2018-07-16 22:56:43', NULL, 'maga', 7),
+(2, '2018-07-16 22:56:46', NULL, 'maga', 7),
+(3, '2018-07-16 22:56:48', '2018-07-16 22:56:58', 'maga', 7),
+(4, '2018-07-16 22:57:29', NULL, 'maga', 7),
+(5, '2018-07-16 22:57:31', NULL, 'maga', 7),
+(6, '2018-07-16 22:57:33', '2018-07-16 22:58:19', 'maga', 7),
+(7, '2018-07-22 19:36:46', NULL, 'maga', 7),
+(8, '2018-07-22 19:36:48', '2018-07-22 19:38:08', 'maga', 7),
+(9, '2018-07-22 19:39:13', NULL, 'maga', 7),
+(10, '2018-07-22 19:39:26', NULL, 'maga', 7),
+(11, '2018-07-22 19:39:28', NULL, 'maga', 7),
+(12, '2018-07-22 19:39:30', '2018-07-22 19:39:58', 'maga', 7),
+(13, '2018-07-25 00:16:05', '2018-07-25 00:16:23', 'lalaoa', 7);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `log_has_student`
---
-
-CREATE TABLE `log_has_student` (
-  `log_idlog` int(11) NOT NULL,
-  `student_idstudent` int(11) NOT NULL,
-  `student_role_idrole` int(11) NOT NULL,
-  `student_gender_idgender` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `material`
+-- Table structure for table `material`
 --
 
 CREATE TABLE `material` (
@@ -216,17 +246,17 @@ CREATE TABLE `material` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `material`
+-- Dumping data for table `material`
 --
 
 INSERT INTO `material` (`idmaterial`, `materialname`, `descriptionleft`, `descriptionright`, `link`, `route`, `url`, `materialtype_idmaterialtype`) VALUES
-(1, 'Mac DeMarco - Chamber of Reflection', 'newjerseyjustin\nPublicado el 10 mar. 2014\nsupport mac and buy salad days on the right.\nhttps://itunes.apple.com/us/album/sal...\nChamber of Reflection\nCategoría\nMúsica\nLicencia\nLicencia estándar', '', 'https://www.youtube.com/watch?v=NY8IS0ssnXQ', '', '', 4),
-(2, 'Tool - sober', '1992', 'EE.UU', 'https://www.youtube.com/watch?v=hglVqACd1C8', '', '', 4);
+(1, 'Metal.mp3', '', '', '', 'Metal.mp3', '', 2),
+(2, 'UCHIRO GERI', 'KARATE ', 'PATADAS', 'https://www.youtube.com/watch?v=6jEoWCiMTI8', '', '', 4);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `materialtype`
+-- Table structure for table `materialtype`
 --
 
 CREATE TABLE `materialtype` (
@@ -235,48 +265,109 @@ CREATE TABLE `materialtype` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `materialtype`
+-- Dumping data for table `materialtype`
 --
 
 INSERT INTO `materialtype` (`idmaterialtype`, `materialtypename`) VALUES
-(1, 'Files'),
+(1, 'PDF'),
 (2, 'Audio'),
-(3, 'Upload Video'),
-(4, 'Youtube Link');
+(3, 'Video'),
+(4, 'Youtube');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `question`
+-- Table structure for table `material_has_class`
+--
+
+CREATE TABLE `material_has_class` (
+  `material_idmaterial` int(11) NOT NULL,
+  `class_idclass` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mode`
+--
+
+CREATE TABLE `mode` (
+  `idmode` int(11) NOT NULL,
+  `namemode` varchar(45) NOT NULL,
+  `description` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `mode`
+--
+
+INSERT INTO `mode` (`idmode`, `namemode`, `description`) VALUES
+(1, 'Selection', NULL),
+(2, 'DragAndDrop', NULL),
+(3, 'Complete', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `question`
 --
 
 CREATE TABLE `question` (
   `idquestion` int(11) NOT NULL,
   `questionname` varchar(200) NOT NULL,
   `description` varchar(200) DEFAULT NULL,
-  `activity_idactivity` int(11) NOT NULL,
-  `activity_unity_idunity` int(11) NOT NULL,
-  `activity_unity_class_idclass` int(11) NOT NULL,
-  `activity_unity_class_teacher_idteacher` int(11) NOT NULL,
-  `activity_material_idmaterial` int(11) NOT NULL,
-  `activity_material_materialtype_idmaterialtype` int(11) NOT NULL
+  `questiontype_idquestiontype` int(11) NOT NULL,
+  `mode_idmode` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `question_has_record`
+-- Table structure for table `questiontype`
 --
 
-CREATE TABLE `question_has_record` (
+CREATE TABLE `questiontype` (
+  `idquestiontype` int(11) NOT NULL,
+  `typename` varchar(45) NOT NULL,
+  `description` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `questiontype`
+--
+
+INSERT INTO `questiontype` (`idquestiontype`, `typename`, `description`) VALUES
+(1, 'Listening', NULL),
+(2, 'Reading', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `question_has_activity`
+--
+
+CREATE TABLE `question_has_activity` (
   `question_idquestion` int(11) NOT NULL,
-  `record_idrecord` int(11) NOT NULL
+  `question_questiontype_idquestiontype` int(11) NOT NULL,
+  `activity_idactivity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `record`
+-- Table structure for table `question_has_exam`
+--
+
+CREATE TABLE `question_has_exam` (
+  `question_idquestion` int(11) NOT NULL,
+  `question_questiontype_idquestiontype` int(11) NOT NULL,
+  `exam_idexam` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `record`
 --
 
 CREATE TABLE `record` (
@@ -289,19 +380,7 @@ CREATE TABLE `record` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `record_has_class`
---
-
-CREATE TABLE `record_has_class` (
-  `record_idrecord` int(11) NOT NULL,
-  `class_idclass` int(11) NOT NULL,
-  `class_teacher_idteacher` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `role`
+-- Table structure for table `role`
 --
 
 CREATE TABLE `role` (
@@ -310,18 +389,56 @@ CREATE TABLE `role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `role`
+-- Dumping data for table `role`
 --
 
 INSERT INTO `role` (`idrole`, `rolename`) VALUES
-(1, 'student'),
-(2, 'teacher'),
-(3, 'coordinator');
+(4, 'Administrator'),
+(5, 'Coordinator'),
+(6, 'Teacher'),
+(7, 'Student');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `student`
+-- Table structure for table `section`
+--
+
+CREATE TABLE `section` (
+  `idsection` int(11) NOT NULL,
+  `sectionname` varchar(45) DEFAULT NULL,
+  `description` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `section`
+--
+
+INSERT INTO `section` (`idsection`, `sectionname`, `description`) VALUES
+(2, '651-7D', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `section_has_class`
+--
+
+CREATE TABLE `section_has_class` (
+  `section_idsection` int(11) NOT NULL,
+  `class_idclass` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `section_has_class`
+--
+
+INSERT INTO `section_has_class` (`section_idsection`, `class_idclass`) VALUES
+(2, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `student`
 --
 
 CREATE TABLE `student` (
@@ -337,51 +454,45 @@ CREATE TABLE `student` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `student`
+-- Dumping data for table `student`
 --
 
 INSERT INTO `student` (`idstudent`, `idnumber`, `name`, `lastname`, `username`, `password`, `email`, `role_idrole`, `gender_idgender`) VALUES
-(3, '17597491-1', 'Mauricio Eduardo', 'Garcia Mardones', 'magata', '202cb962ac59075b964b07152d234b70', 'mgarciamardones@gmail.com', 1, 1),
-(4, '22222222-2', 'Jose Agustin', 'Parra Cancino', 'paca', '202cb962ac59075b964b07152d234b70', 'jose_parra@gmail.com', 1, 1),
-(5, '33333333-3', 'sdasdasdDSASDA', 'ASDAASDASD', 'ASDAS', '123', 'SDADADAD', 1, 1);
+(9, '15153155-5', 'OSCAR ALFONSO', 'LAGOS LAGOS', 'lalaoa', '81dc9bdb52d04dc20036dbd8313ed055', 'oscar.alfonso@inacapmail.cl', 7, 3);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `student_has_class`
+-- Table structure for table `student_has_log`
 --
 
-CREATE TABLE `student_has_class` (
+CREATE TABLE `student_has_log` (
   `student_idstudent` int(11) NOT NULL,
-  `student_role_idrole` int(11) NOT NULL,
-  `student_gender_idgender` int(11) NOT NULL,
-  `class_idclass` int(11) NOT NULL,
-  `class_teacher_idteacher` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `student_has_class`
---
-
-INSERT INTO `student_has_class` (`student_idstudent`, `student_role_idrole`, `student_gender_idgender`, `class_idclass`, `class_teacher_idteacher`) VALUES
-(3, 1, 1, 5, 1);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `student_has_record`
---
-
-CREATE TABLE `student_has_record` (
-  `student_idstudent` int(11) NOT NULL,
-  `student_class_idclass` int(11) NOT NULL,
-  `record_idrecord` int(11) NOT NULL
+  `log_idlog` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `teacher`
+-- Table structure for table `student_has_section`
+--
+
+CREATE TABLE `student_has_section` (
+  `student_idstudent` int(11) NOT NULL,
+  `section_idsection` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `student_has_section`
+--
+
+INSERT INTO `student_has_section` (`student_idstudent`, `section_idsection`) VALUES
+(9, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `teacher`
 --
 
 CREATE TABLE `teacher` (
@@ -397,29 +508,45 @@ CREATE TABLE `teacher` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `teacher`
+-- Dumping data for table `teacher`
 --
 
 INSERT INTO `teacher` (`idteacher`, `idnumber`, `name`, `lastname`, `username`, `password`, `email`, `role_idrole`, `gender_idgender`) VALUES
-(1, '11111111-1', 'Belén Elizabeth', 'Pérez Durán', 'beped', '202cb962ac59075b964b07152d234b70', 'belen.perez04@inacapmail.cl', 2, 2);
+(4, '17669373-8', 'BELÉN ELIZABETH', 'PEREZ DURÁN', 'beped', '81dc9bdb52d04dc20036dbd8313ed055', 'belen.perez@inacapmail.cl', 6, 4);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `teacher_has_log`
+-- Table structure for table `teacher_has_log`
 --
 
 CREATE TABLE `teacher_has_log` (
   `teacher_idteacher` int(11) NOT NULL,
-  `teacher_role_idrole` int(11) NOT NULL,
-  `teacher_gender_idgender` int(11) NOT NULL,
   `log_idlog` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `unity`
+-- Table structure for table `teacher_has_section`
+--
+
+CREATE TABLE `teacher_has_section` (
+  `teacher_idteacher` int(11) NOT NULL,
+  `section_idsection` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `teacher_has_section`
+--
+
+INSERT INTO `teacher_has_section` (`teacher_idteacher`, `section_idsection`) VALUES
+(4, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `unity`
 --
 
 CREATE TABLE `unity` (
@@ -427,36 +554,38 @@ CREATE TABLE `unity` (
   `unityname` varchar(45) NOT NULL,
   `descriptioncenter` varchar(200) DEFAULT NULL,
   `descriptionleft` varchar(200) DEFAULT NULL,
-  `descriptionright` varchar(200) DEFAULT NULL,
-  `class_idclass` int(11) NOT NULL,
-  `class_teacher_idteacher` int(11) NOT NULL
+  `descriptionright` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `unity`
+-- Dumping data for table `unity`
 --
 
-INSERT INTO `unity` (`idunity`, `unityname`, `descriptioncenter`, `descriptionleft`, `descriptionright`, `class_idclass`, `class_teacher_idteacher`) VALUES
-(2, 'SMARTPHONE', 'Mobile Devices', '', '', 5, 1),
-(3, 'Information Tecnology', '', '', '', 1, 1);
+INSERT INTO `unity` (`idunity`, `unityname`, `descriptioncenter`, `descriptionleft`, `descriptionright`) VALUES
+(3, 'UNIT I', 'Shopping', '', '');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `unity_has_exam`
+-- Table structure for table `unity_has_section`
 --
 
-CREATE TABLE `unity_has_exam` (
+CREATE TABLE `unity_has_section` (
   `unity_idunity` int(11) NOT NULL,
-  `unity_class_idclass` int(11) NOT NULL,
-  `unity_class_teacher_idteacher` int(11) NOT NULL,
-  `exam_idexam` int(11) NOT NULL
+  `section_idsection` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `unity_has_section`
+--
+
+INSERT INTO `unity_has_section` (`unity_idunity`, `section_idsection`) VALUES
+(3, 2);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `value`
+-- Table structure for table `value`
 --
 
 CREATE TABLE `value` (
@@ -466,7 +595,7 @@ CREATE TABLE `value` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `value`
+-- Dumping data for table `value`
 --
 
 INSERT INTO `value` (`idvalue`, `valuename`, `val`) VALUES
@@ -475,20 +604,34 @@ INSERT INTO `value` (`idvalue`, `valuename`, `val`) VALUES
 (3, 'Bad', 0);
 
 --
--- Índices para tablas volcadas
+-- Indexes for dumped tables
 --
 
 --
--- Indices de la tabla `activity`
+-- Indexes for table `activity`
 --
 ALTER TABLE `activity`
-  ADD PRIMARY KEY (`idactivity`,`unity_idunity`,`unity_class_idclass`,`unity_class_teacher_idteacher`,`material_idmaterial`,`material_materialtype_idmaterialtype`),
-  ADD UNIQUE KEY `activityname_UNIQUE` (`activityname`),
-  ADD KEY `fk_activity_unity1_idx` (`unity_idunity`,`unity_class_idclass`,`unity_class_teacher_idteacher`),
-  ADD KEY `fk_activity_material1_idx` (`material_idmaterial`,`material_materialtype_idmaterialtype`);
+  ADD PRIMARY KEY (`idactivity`),
+  ADD UNIQUE KEY `activityname_UNIQUE` (`activityname`);
 
 --
--- Indices de la tabla `answer`
+-- Indexes for table `activity_has_unity`
+--
+ALTER TABLE `activity_has_unity`
+  ADD PRIMARY KEY (`activity_idactivity`,`unity_idunity`),
+  ADD KEY `fk_activity_has_unity_unity1_idx` (`unity_idunity`),
+  ADD KEY `fk_activity_has_unity_activity1_idx` (`activity_idactivity`);
+
+--
+-- Indexes for table `administrator`
+--
+ALTER TABLE `administrator`
+  ADD PRIMARY KEY (`idadministrator`,`role_idrole`,`gender_idgender`),
+  ADD KEY `fk_administrator_role1_idx` (`role_idrole`),
+  ADD KEY `fk_administrator_gender1_idx` (`gender_idgender`);
+
+--
+-- Indexes for table `answer`
 --
 ALTER TABLE `answer`
   ADD PRIMARY KEY (`idanswer`,`value_idvalue`,`question_idquestion`),
@@ -496,14 +639,13 @@ ALTER TABLE `answer`
   ADD KEY `fk_answer_question1_idx` (`question_idquestion`);
 
 --
--- Indices de la tabla `class`
+-- Indexes for table `class`
 --
 ALTER TABLE `class`
-  ADD PRIMARY KEY (`idclass`,`teacher_idteacher`),
-  ADD KEY `fk_class_teacher1_idx` (`teacher_idteacher`);
+  ADD PRIMARY KEY (`idclass`);
 
 --
--- Indices de la tabla `coordinator`
+-- Indexes for table `coordinator`
 --
 ALTER TABLE `coordinator`
   ADD PRIMARY KEY (`idcoordinator`,`role_idrole`,`gender_idgender`),
@@ -513,97 +655,124 @@ ALTER TABLE `coordinator`
   ADD KEY `fk_teacher_gender1_idx` (`gender_idgender`);
 
 --
--- Indices de la tabla `exam`
+-- Indexes for table `exam`
 --
 ALTER TABLE `exam`
-  ADD PRIMARY KEY (`idexam`,`state`),
+  ADD PRIMARY KEY (`idexam`),
   ADD UNIQUE KEY `examname_UNIQUE` (`examname`);
 
 --
--- Indices de la tabla `exam_has_record`
+-- Indexes for table `exam_has_unity`
 --
-ALTER TABLE `exam_has_record`
-  ADD PRIMARY KEY (`exam_idexam`,`record_idrecord`),
-  ADD KEY `fk_exam_has_record_record1_idx` (`record_idrecord`),
-  ADD KEY `fk_exam_has_record_exam1_idx` (`exam_idexam`);
+ALTER TABLE `exam_has_unity`
+  ADD PRIMARY KEY (`exam_idexam`,`unity_idunity`),
+  ADD KEY `fk_exam_has_unity_unity1_idx` (`unity_idunity`),
+  ADD KEY `fk_exam_has_unity_exam1_idx` (`exam_idexam`);
 
 --
--- Indices de la tabla `gender`
+-- Indexes for table `gender`
 --
 ALTER TABLE `gender`
   ADD PRIMARY KEY (`idgender`);
 
 --
--- Indices de la tabla `glosary`
+-- Indexes for table `glosary`
 --
 ALTER TABLE `glosary`
   ADD PRIMARY KEY (`idglosary`),
   ADD UNIQUE KEY `wordname_UNIQUE` (`wordname`);
 
 --
--- Indices de la tabla `log`
+-- Indexes for table `log`
 --
 ALTER TABLE `log`
   ADD PRIMARY KEY (`idlog`);
 
 --
--- Indices de la tabla `log_has_student`
---
-ALTER TABLE `log_has_student`
-  ADD PRIMARY KEY (`log_idlog`,`student_idstudent`,`student_role_idrole`,`student_gender_idgender`),
-  ADD KEY `fk_log_has_student_student1_idx` (`student_idstudent`,`student_role_idrole`,`student_gender_idgender`),
-  ADD KEY `fk_log_has_student_log1_idx` (`log_idlog`);
-
---
--- Indices de la tabla `material`
+-- Indexes for table `material`
 --
 ALTER TABLE `material`
   ADD PRIMARY KEY (`idmaterial`,`materialtype_idmaterialtype`),
   ADD KEY `fk_material_materialtype1_idx` (`materialtype_idmaterialtype`);
 
 --
--- Indices de la tabla `materialtype`
+-- Indexes for table `materialtype`
 --
 ALTER TABLE `materialtype`
   ADD PRIMARY KEY (`idmaterialtype`);
 
 --
--- Indices de la tabla `question`
+-- Indexes for table `material_has_class`
+--
+ALTER TABLE `material_has_class`
+  ADD PRIMARY KEY (`material_idmaterial`,`class_idclass`),
+  ADD KEY `fk_material_has_class_class1_idx` (`class_idclass`),
+  ADD KEY `fk_material_has_class_material1_idx` (`material_idmaterial`);
+
+--
+-- Indexes for table `mode`
+--
+ALTER TABLE `mode`
+  ADD PRIMARY KEY (`idmode`);
+
+--
+-- Indexes for table `question`
 --
 ALTER TABLE `question`
-  ADD PRIMARY KEY (`idquestion`,`activity_idactivity`,`activity_unity_idunity`,`activity_unity_class_idclass`,`activity_unity_class_teacher_idteacher`,`activity_material_idmaterial`,`activity_material_materialtype_idmaterialtype`),
-  ADD KEY `fk_question_activity1_idx` (`activity_idactivity`,`activity_unity_idunity`,`activity_unity_class_idclass`,`activity_unity_class_teacher_idteacher`,`activity_material_idmaterial`,`activity_material_materialtype_idmaterialtype`);
+  ADD PRIMARY KEY (`idquestion`,`questiontype_idquestiontype`,`mode_idmode`),
+  ADD KEY `fk_question_questiontype1_idx` (`questiontype_idquestiontype`),
+  ADD KEY `fk_question_mode1_idx` (`mode_idmode`);
 
 --
--- Indices de la tabla `question_has_record`
+-- Indexes for table `questiontype`
 --
-ALTER TABLE `question_has_record`
-  ADD PRIMARY KEY (`question_idquestion`,`record_idrecord`),
-  ADD KEY `fk_question_has_record_record1_idx` (`record_idrecord`),
-  ADD KEY `fk_question_has_record_question1_idx` (`question_idquestion`);
+ALTER TABLE `questiontype`
+  ADD PRIMARY KEY (`idquestiontype`);
 
 --
--- Indices de la tabla `record`
+-- Indexes for table `question_has_activity`
+--
+ALTER TABLE `question_has_activity`
+  ADD PRIMARY KEY (`question_idquestion`,`question_questiontype_idquestiontype`,`activity_idactivity`),
+  ADD KEY `fk_question_has_activity_activity1_idx` (`activity_idactivity`),
+  ADD KEY `fk_question_has_activity_question1_idx` (`question_idquestion`,`question_questiontype_idquestiontype`);
+
+--
+-- Indexes for table `question_has_exam`
+--
+ALTER TABLE `question_has_exam`
+  ADD PRIMARY KEY (`question_idquestion`,`question_questiontype_idquestiontype`,`exam_idexam`),
+  ADD KEY `fk_question_has_exam_exam1_idx` (`exam_idexam`),
+  ADD KEY `fk_question_has_exam_question1_idx` (`question_idquestion`,`question_questiontype_idquestiontype`);
+
+--
+-- Indexes for table `record`
 --
 ALTER TABLE `record`
   ADD PRIMARY KEY (`idrecord`);
 
 --
--- Indices de la tabla `record_has_class`
---
-ALTER TABLE `record_has_class`
-  ADD PRIMARY KEY (`record_idrecord`,`class_idclass`,`class_teacher_idteacher`),
-  ADD KEY `fk_record_has_class_class1_idx` (`class_idclass`,`class_teacher_idteacher`),
-  ADD KEY `fk_record_has_class_record1_idx` (`record_idrecord`);
-
---
--- Indices de la tabla `role`
+-- Indexes for table `role`
 --
 ALTER TABLE `role`
   ADD PRIMARY KEY (`idrole`);
 
 --
--- Indices de la tabla `student`
+-- Indexes for table `section`
+--
+ALTER TABLE `section`
+  ADD PRIMARY KEY (`idsection`);
+
+--
+-- Indexes for table `section_has_class`
+--
+ALTER TABLE `section_has_class`
+  ADD PRIMARY KEY (`section_idsection`,`class_idclass`),
+  ADD KEY `fk_section_has_class_class1_idx` (`class_idclass`),
+  ADD KEY `fk_section_has_class_section1_idx` (`section_idsection`);
+
+--
+-- Indexes for table `student`
 --
 ALTER TABLE `student`
   ADD PRIMARY KEY (`idstudent`,`role_idrole`,`gender_idgender`),
@@ -613,23 +782,23 @@ ALTER TABLE `student`
   ADD KEY `fk_student_gender1_idx` (`gender_idgender`);
 
 --
--- Indices de la tabla `student_has_class`
+-- Indexes for table `student_has_log`
 --
-ALTER TABLE `student_has_class`
-  ADD PRIMARY KEY (`student_idstudent`,`student_role_idrole`,`student_gender_idgender`,`class_idclass`,`class_teacher_idteacher`),
-  ADD KEY `fk_student_has_class_class1_idx` (`class_idclass`,`class_teacher_idteacher`),
-  ADD KEY `fk_student_has_class_student1_idx` (`student_idstudent`,`student_role_idrole`,`student_gender_idgender`);
+ALTER TABLE `student_has_log`
+  ADD PRIMARY KEY (`student_idstudent`,`log_idlog`),
+  ADD KEY `fk_student_has_log_log1_idx` (`log_idlog`),
+  ADD KEY `fk_student_has_log_student1_idx` (`student_idstudent`);
 
 --
--- Indices de la tabla `student_has_record`
+-- Indexes for table `student_has_section`
 --
-ALTER TABLE `student_has_record`
-  ADD PRIMARY KEY (`student_idstudent`,`student_class_idclass`,`record_idrecord`),
-  ADD KEY `fk_student_has_record_record1_idx` (`record_idrecord`),
-  ADD KEY `fk_student_has_record_student1_idx` (`student_idstudent`,`student_class_idclass`);
+ALTER TABLE `student_has_section`
+  ADD PRIMARY KEY (`student_idstudent`,`section_idsection`),
+  ADD KEY `fk_student_has_section_section1_idx` (`section_idsection`),
+  ADD KEY `fk_student_has_section_student1_idx` (`student_idstudent`);
 
 --
--- Indices de la tabla `teacher`
+-- Indexes for table `teacher`
 --
 ALTER TABLE `teacher`
   ADD PRIMARY KEY (`idteacher`,`role_idrole`,`gender_idgender`),
@@ -639,259 +808,299 @@ ALTER TABLE `teacher`
   ADD KEY `fk_teacher_gender1_idx` (`gender_idgender`);
 
 --
--- Indices de la tabla `teacher_has_log`
+-- Indexes for table `teacher_has_log`
 --
 ALTER TABLE `teacher_has_log`
-  ADD PRIMARY KEY (`teacher_idteacher`,`teacher_role_idrole`,`teacher_gender_idgender`,`log_idlog`),
+  ADD PRIMARY KEY (`teacher_idteacher`,`log_idlog`),
   ADD KEY `fk_teacher_has_log_log1_idx` (`log_idlog`),
-  ADD KEY `fk_teacher_has_log_teacher1_idx` (`teacher_idteacher`,`teacher_role_idrole`,`teacher_gender_idgender`);
+  ADD KEY `fk_teacher_has_log_teacher1_idx` (`teacher_idteacher`);
 
 --
--- Indices de la tabla `unity`
+-- Indexes for table `teacher_has_section`
+--
+ALTER TABLE `teacher_has_section`
+  ADD PRIMARY KEY (`teacher_idteacher`,`section_idsection`),
+  ADD KEY `fk_teacher_has_section_section1_idx` (`section_idsection`),
+  ADD KEY `fk_teacher_has_section_teacher1_idx` (`teacher_idteacher`);
+
+--
+-- Indexes for table `unity`
 --
 ALTER TABLE `unity`
-  ADD PRIMARY KEY (`idunity`,`class_idclass`,`class_teacher_idteacher`),
-  ADD UNIQUE KEY `descriptioncenter_UNIQUE` (`descriptioncenter`),
-  ADD KEY `fk_unity_class1_idx` (`class_idclass`,`class_teacher_idteacher`);
+  ADD PRIMARY KEY (`idunity`);
 
 --
--- Indices de la tabla `unity_has_exam`
+-- Indexes for table `unity_has_section`
 --
-ALTER TABLE `unity_has_exam`
-  ADD PRIMARY KEY (`unity_idunity`,`unity_class_idclass`,`unity_class_teacher_idteacher`,`exam_idexam`),
-  ADD KEY `fk_unity_has_exam_exam1_idx` (`exam_idexam`),
-  ADD KEY `fk_unity_has_exam_unity1_idx` (`unity_idunity`,`unity_class_idclass`,`unity_class_teacher_idteacher`);
+ALTER TABLE `unity_has_section`
+  ADD PRIMARY KEY (`unity_idunity`,`section_idsection`),
+  ADD KEY `fk_unity_has_section_section1_idx` (`section_idsection`),
+  ADD KEY `fk_unity_has_section_unity1_idx` (`unity_idunity`);
 
 --
--- Indices de la tabla `value`
+-- Indexes for table `value`
 --
 ALTER TABLE `value`
   ADD PRIMARY KEY (`idvalue`);
 
 --
--- AUTO_INCREMENT de las tablas volcadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de la tabla `activity`
+-- AUTO_INCREMENT for table `activity`
 --
 ALTER TABLE `activity`
-  MODIFY `idactivity` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idactivity` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT de la tabla `answer`
+-- AUTO_INCREMENT for table `administrator`
+--
+ALTER TABLE `administrator`
+  MODIFY `idadministrator` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `answer`
 --
 ALTER TABLE `answer`
-  MODIFY `idanswer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idanswer` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `class`
+-- AUTO_INCREMENT for table `class`
 --
 ALTER TABLE `class`
-  MODIFY `idclass` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idclass` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT de la tabla `coordinator`
+-- AUTO_INCREMENT for table `coordinator`
 --
 ALTER TABLE `coordinator`
-  MODIFY `idcoordinator` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idcoordinator` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `exam`
+-- AUTO_INCREMENT for table `exam`
 --
 ALTER TABLE `exam`
   MODIFY `idexam` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `gender`
+-- AUTO_INCREMENT for table `gender`
 --
 ALTER TABLE `gender`
-  MODIFY `idgender` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idgender` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT de la tabla `glosary`
+-- AUTO_INCREMENT for table `glosary`
 --
 ALTER TABLE `glosary`
-  MODIFY `idglosary` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idglosary` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `log`
+-- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `idlog` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idlog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT de la tabla `material`
+-- AUTO_INCREMENT for table `material`
 --
 ALTER TABLE `material`
   MODIFY `idmaterial` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT de la tabla `materialtype`
+-- AUTO_INCREMENT for table `materialtype`
 --
 ALTER TABLE `materialtype`
   MODIFY `idmaterialtype` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT de la tabla `question`
+-- AUTO_INCREMENT for table `mode`
 --
-ALTER TABLE `question`
-  MODIFY `idquestion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `mode`
+  MODIFY `idmode` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT de la tabla `record`
+-- AUTO_INCREMENT for table `question`
+--
+ALTER TABLE `question`
+  MODIFY `idquestion` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `questiontype`
+--
+ALTER TABLE `questiontype`
+  MODIFY `idquestiontype` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `record`
 --
 ALTER TABLE `record`
   MODIFY `idrecord` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `role`
+-- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
-  MODIFY `idrole` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idrole` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT de la tabla `student`
+-- AUTO_INCREMENT for table `section`
+--
+ALTER TABLE `section`
+  MODIFY `idsection` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `idstudent` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idstudent` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT de la tabla `teacher`
+-- AUTO_INCREMENT for table `teacher`
 --
 ALTER TABLE `teacher`
-  MODIFY `idteacher` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idteacher` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT de la tabla `unity`
+-- AUTO_INCREMENT for table `unity`
 --
 ALTER TABLE `unity`
   MODIFY `idunity` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT de la tabla `value`
+-- AUTO_INCREMENT for table `value`
 --
 ALTER TABLE `value`
   MODIFY `idvalue` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Restricciones para tablas volcadas
+-- Constraints for dumped tables
 --
 
 --
--- Filtros para la tabla `activity`
+-- Constraints for table `activity_has_unity`
 --
-ALTER TABLE `activity`
-  ADD CONSTRAINT `fk_activity_material1` FOREIGN KEY (`material_idmaterial`,`material_materialtype_idmaterialtype`) REFERENCES `material` (`idmaterial`, `materialtype_idmaterialtype`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_activity_unity1` FOREIGN KEY (`unity_idunity`,`unity_class_idclass`,`unity_class_teacher_idteacher`) REFERENCES `unity` (`idunity`, `class_idclass`, `class_teacher_idteacher`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `activity_has_unity`
+  ADD CONSTRAINT `fk_activity_has_unity_activity1` FOREIGN KEY (`activity_idactivity`) REFERENCES `activity` (`idactivity`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_activity_has_unity_unity1` FOREIGN KEY (`unity_idunity`) REFERENCES `unity` (`idunity`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `answer`
+-- Constraints for table `administrator`
+--
+ALTER TABLE `administrator`
+  ADD CONSTRAINT `fk_administrator_gender1` FOREIGN KEY (`gender_idgender`) REFERENCES `gender` (`idgender`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_administrator_role1` FOREIGN KEY (`role_idrole`) REFERENCES `role` (`idrole`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `answer`
 --
 ALTER TABLE `answer`
   ADD CONSTRAINT `fk_answer_question1` FOREIGN KEY (`question_idquestion`) REFERENCES `question` (`idquestion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_answer_value1` FOREIGN KEY (`value_idvalue`) REFERENCES `value` (`idvalue`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `class`
---
-ALTER TABLE `class`
-  ADD CONSTRAINT `fk_class_teacher1` FOREIGN KEY (`teacher_idteacher`) REFERENCES `teacher` (`idteacher`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `coordinator`
+-- Constraints for table `coordinator`
 --
 ALTER TABLE `coordinator`
   ADD CONSTRAINT `fk_teacher_gender10` FOREIGN KEY (`gender_idgender`) REFERENCES `gender` (`idgender`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_teacher_role10` FOREIGN KEY (`role_idrole`) REFERENCES `role` (`idrole`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `exam_has_record`
+-- Constraints for table `exam_has_unity`
 --
-ALTER TABLE `exam_has_record`
-  ADD CONSTRAINT `fk_exam_has_record_exam1` FOREIGN KEY (`exam_idexam`) REFERENCES `exam` (`idexam`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_exam_has_record_record1` FOREIGN KEY (`record_idrecord`) REFERENCES `record` (`idrecord`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `exam_has_unity`
+  ADD CONSTRAINT `fk_exam_has_unity_exam1` FOREIGN KEY (`exam_idexam`) REFERENCES `exam` (`idexam`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_exam_has_unity_unity1` FOREIGN KEY (`unity_idunity`) REFERENCES `unity` (`idunity`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `log_has_student`
---
-ALTER TABLE `log_has_student`
-  ADD CONSTRAINT `fk_log_has_student_log1` FOREIGN KEY (`log_idlog`) REFERENCES `log` (`idlog`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_log_has_student_student1` FOREIGN KEY (`student_idstudent`,`student_role_idrole`,`student_gender_idgender`) REFERENCES `student` (`idstudent`, `role_idrole`, `gender_idgender`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `material`
+-- Constraints for table `material`
 --
 ALTER TABLE `material`
   ADD CONSTRAINT `fk_material_materialtype1` FOREIGN KEY (`materialtype_idmaterialtype`) REFERENCES `materialtype` (`idmaterialtype`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `question`
+-- Constraints for table `material_has_class`
+--
+ALTER TABLE `material_has_class`
+  ADD CONSTRAINT `fk_material_has_class_class1` FOREIGN KEY (`class_idclass`) REFERENCES `class` (`idclass`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_material_has_class_material1` FOREIGN KEY (`material_idmaterial`) REFERENCES `material` (`idmaterial`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `question`
 --
 ALTER TABLE `question`
-  ADD CONSTRAINT `fk_question_activity1` FOREIGN KEY (`activity_idactivity`,`activity_unity_idunity`,`activity_unity_class_idclass`,`activity_unity_class_teacher_idteacher`,`activity_material_idmaterial`,`activity_material_materialtype_idmaterialtype`) REFERENCES `activity` (`idactivity`, `unity_idunity`, `unity_class_idclass`, `unity_class_teacher_idteacher`, `material_idmaterial`, `material_materialtype_idmaterialtype`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_question_mode1` FOREIGN KEY (`mode_idmode`) REFERENCES `mode` (`idmode`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_question_questiontype1` FOREIGN KEY (`questiontype_idquestiontype`) REFERENCES `questiontype` (`idquestiontype`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `question_has_record`
+-- Constraints for table `question_has_activity`
 --
-ALTER TABLE `question_has_record`
-  ADD CONSTRAINT `fk_question_has_record_question1` FOREIGN KEY (`question_idquestion`) REFERENCES `question` (`idquestion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_question_has_record_record1` FOREIGN KEY (`record_idrecord`) REFERENCES `record` (`idrecord`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `question_has_activity`
+  ADD CONSTRAINT `fk_question_has_activity_activity1` FOREIGN KEY (`activity_idactivity`) REFERENCES `activity` (`idactivity`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_question_has_activity_question1` FOREIGN KEY (`question_idquestion`,`question_questiontype_idquestiontype`) REFERENCES `question` (`idquestion`, `questiontype_idquestiontype`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `record_has_class`
+-- Constraints for table `question_has_exam`
 --
-ALTER TABLE `record_has_class`
-  ADD CONSTRAINT `fk_record_has_class_class1` FOREIGN KEY (`class_idclass`,`class_teacher_idteacher`) REFERENCES `class` (`idclass`, `teacher_idteacher`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_record_has_class_record1` FOREIGN KEY (`record_idrecord`) REFERENCES `record` (`idrecord`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `question_has_exam`
+  ADD CONSTRAINT `fk_question_has_exam_exam1` FOREIGN KEY (`exam_idexam`) REFERENCES `exam` (`idexam`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_question_has_exam_question1` FOREIGN KEY (`question_idquestion`,`question_questiontype_idquestiontype`) REFERENCES `question` (`idquestion`, `questiontype_idquestiontype`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `student`
+-- Constraints for table `section_has_class`
+--
+ALTER TABLE `section_has_class`
+  ADD CONSTRAINT `fk_section_has_class_class1` FOREIGN KEY (`class_idclass`) REFERENCES `class` (`idclass`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_section_has_class_section1` FOREIGN KEY (`section_idsection`) REFERENCES `section` (`idsection`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `student`
 --
 ALTER TABLE `student`
   ADD CONSTRAINT `fk_student_gender1` FOREIGN KEY (`gender_idgender`) REFERENCES `gender` (`idgender`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_student_role1` FOREIGN KEY (`role_idrole`) REFERENCES `role` (`idrole`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `student_has_class`
+-- Constraints for table `student_has_log`
 --
-ALTER TABLE `student_has_class`
-  ADD CONSTRAINT `fk_student_has_class_class1` FOREIGN KEY (`class_idclass`,`class_teacher_idteacher`) REFERENCES `class` (`idclass`, `teacher_idteacher`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_student_has_class_student1` FOREIGN KEY (`student_idstudent`,`student_role_idrole`,`student_gender_idgender`) REFERENCES `student` (`idstudent`, `role_idrole`, `gender_idgender`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `student_has_log`
+  ADD CONSTRAINT `fk_student_has_log_log1` FOREIGN KEY (`log_idlog`) REFERENCES `log` (`idlog`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_student_has_log_student1` FOREIGN KEY (`student_idstudent`) REFERENCES `student` (`idstudent`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `student_has_record`
+-- Constraints for table `student_has_section`
 --
-ALTER TABLE `student_has_record`
-  ADD CONSTRAINT `fk_student_has_record_record1` FOREIGN KEY (`record_idrecord`) REFERENCES `record` (`idrecord`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_student_has_record_student1` FOREIGN KEY (`student_idstudent`) REFERENCES `student` (`idstudent`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `student_has_section`
+  ADD CONSTRAINT `fk_student_has_section_section1` FOREIGN KEY (`section_idsection`) REFERENCES `section` (`idsection`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_student_has_section_student1` FOREIGN KEY (`student_idstudent`) REFERENCES `student` (`idstudent`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `teacher`
+-- Constraints for table `teacher`
 --
 ALTER TABLE `teacher`
   ADD CONSTRAINT `fk_teacher_gender1` FOREIGN KEY (`gender_idgender`) REFERENCES `gender` (`idgender`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_teacher_role1` FOREIGN KEY (`role_idrole`) REFERENCES `role` (`idrole`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `teacher_has_log`
+-- Constraints for table `teacher_has_log`
 --
 ALTER TABLE `teacher_has_log`
   ADD CONSTRAINT `fk_teacher_has_log_log1` FOREIGN KEY (`log_idlog`) REFERENCES `log` (`idlog`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_teacher_has_log_teacher1` FOREIGN KEY (`teacher_idteacher`,`teacher_role_idrole`,`teacher_gender_idgender`) REFERENCES `teacher` (`idteacher`, `role_idrole`, `gender_idgender`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_teacher_has_log_teacher1` FOREIGN KEY (`teacher_idteacher`) REFERENCES `teacher` (`idteacher`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `unity`
+-- Constraints for table `teacher_has_section`
 --
-ALTER TABLE `unity`
-  ADD CONSTRAINT `fk_unity_class1` FOREIGN KEY (`class_idclass`,`class_teacher_idteacher`) REFERENCES `class` (`idclass`, `teacher_idteacher`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `teacher_has_section`
+  ADD CONSTRAINT `fk_teacher_has_section_section1` FOREIGN KEY (`section_idsection`) REFERENCES `section` (`idsection`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_teacher_has_section_teacher1` FOREIGN KEY (`teacher_idteacher`) REFERENCES `teacher` (`idteacher`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `unity_has_exam`
+-- Constraints for table `unity_has_section`
 --
-ALTER TABLE `unity_has_exam`
-  ADD CONSTRAINT `fk_unity_has_exam_exam1` FOREIGN KEY (`exam_idexam`) REFERENCES `exam` (`idexam`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_unity_has_exam_unity1` FOREIGN KEY (`unity_idunity`,`unity_class_idclass`,`unity_class_teacher_idteacher`) REFERENCES `unity` (`idunity`, `class_idclass`, `class_teacher_idteacher`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `unity_has_section`
+  ADD CONSTRAINT `fk_unity_has_section_section1` FOREIGN KEY (`section_idsection`) REFERENCES `section` (`idsection`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_unity_has_section_unity1` FOREIGN KEY (`unity_idunity`) REFERENCES `unity` (`idunity`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

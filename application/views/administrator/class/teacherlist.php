@@ -1,6 +1,6 @@
-<div class="card-panel z-depth-5">
-  <a class="modal-trigger btn waves-effect waves-green grey darken-3" href="#NewTeacher"><i class="material-icons right">add_box</i><strong> New Teacher</strong></a>
-  <button class="btn modal-trigger" href="#teacherhassection"><i class="material-icons right">playlist_add_check</i> Add Teacher to Section</button>
+<div class="">
+   <a class="modal-trigger btn waves-effect waves-green grey darken-3" href="#NewTeacher"><i class="material-icons right">add_box</i><strong> New Teacher</strong></a>
+  <button class="btn modal-trigger blue-grey" href="#teacherhassection"><i class="material-icons right"><div class="chip" ><img src="img/section.png" alt="Contact Person"></div></i><i class="material-icons right">keyboard_tab</i><strong>TEACHER AS SECTION</strong></button>
 
   <!-- MODALs News-->
   <div id="NewTeacher" class="modal modal-fixed-footer">
@@ -22,18 +22,15 @@
             <input type="text" class="validate" maxlength="45" data-length="45" required id="username">
             <label for="username">user Name</label>
            </div>
-           <div class="input-field col s6">
-            <input type="password" class="validate" maxlength="45" data-length="45" required id="password">
-            <label for="password">Password</label>
-           </div>
-           <div class="input-field col s6">
-            <input type="password" class="validate" maxlength="45" data-length="45" required id="passwordconfirm">
-            <label for="passwordconfirm">Password Confirm</label>
-           </div>
-           <div class="input-field col s12">
+           <div class="input-field col s8">
             <input type="text" class="validate" maxlength="45" data-length="45" required id="email">
             <label for="email">Email</label>
-           </div>
+            <div class="card">
+                <div class="card-content">
+                  <span class="card-title"><strong>Password Default is: "1234"</strong></span>
+                </div>
+              </div>
+                  </div>
            <div class="input-field col s6">
               <select disabled="true" id="idselect">
                 <option value="1" disabled selected>Teacher</option>
@@ -48,6 +45,7 @@
                   <?php $i++; endforeach; ?>
                 </select>
                 <label>Gender</label>
+
               </div>
             <?php endif; ?>
       </div>
@@ -56,29 +54,29 @@
         <a href="#!" class="modal-action modal-close btn waves-effect waves-green green darken-1" onclick="saveteacher()"><i class="material-icons right">save</i><strong> Save</strong></a>
       </div>
   </div>
+</div>
+ 
 
 <p class=""><input type="checkbox" class="filled-in" id="teachercheckedall"/>
     <label for="teachercheckedall">Check all</label></p>
-<div class="card-panel z-depth-3">
+<div class="">
       <div id="check">
+        <br>
+        <div class="row">   
             <?php if ($teacher == 0): ?><p>Don't Student!</p><?php else: ?>
               <?php $i = 0; foreach ($teacher as $fila):?>
               <?php $checkcount = $i?>
               
-                  <div class="row">
-                    <div class="col s12 m12">
-                      <div class="card blue-grey lighten-5 z-depth-5">
+
+                    <div class="col s12 m8 l6">
+                      <div class="card blue-grey lighten-5 z-depth-3">
                         <div class="card-content">
                           <p>
                         <input type="checkbox" id="selectteacher<?php echo $i?>"/>
                         <label for="selectteacher<?php echo $i?>">Select </label></p>
                         <br>
-                          <span class="card-title"> 
-                              <strong><?php echo $fila->name ?> <?php echo $fila->lastname?></strong>
-                          </span>
-
+                          <span class="card-title">TEACHER: <strong><?php echo $fila->name ?> <?php echo $fila->lastname?></strong></span>
                           <blockquote><strong>Id Number :</strong> <?php echo $fila->idnumber ?></blockquote>
-                          
                           <blockquote><strong>User Name :</strong> <?php echo $fila->username?></blockquote>
                           <blockquote><strong>Email:</strong> <?php echo $fila->email?></blockquote>
                           
@@ -119,14 +117,13 @@
 
                         </div>
                         <div class="card-action">
-                          <button class="btn modal-trigger grey lighten-3 black-text" id="btneditteachermodal<?php echo $i ?>" style="cursor: pointer;" href="#Modal_edit_teacher<?php echo $i ?>" data-tooltip="Edit Teacher"><i class="material-icons right">edit</i>Edit</button>
-                          <button  class="modal-trigger btn red darken-3" id="btndeleteteacher<?php echo $i ?>" style="cursor: pointer;" href="#Modal_delete_teacher<?php echo $i?>"  data-tooltip="Delete Teacher"><i class="material-icons right">delete</i>Delete</button>
+                          <button class="modal-trigger btn waves-effect waves-green white lighten-3 black-text" id="btneditteachermodal<?php echo $i ?>" style="cursor: pointer;" href="#Modal_edit_teacher<?php echo $i ?>" data-tooltip="Edit Teacher"><i class="material-icons right">edit</i>Edit</button>
+                          <button  class="btn modal-trigger waves-effect waves-red  white red-text" id="btndeleteteacher<?php echo $i ?>" style="cursor: pointer;" href="#Modal_delete_teacher<?php echo $i?>"  data-tooltip="Delete Teacher"><i class="material-icons right">delete</i>Delete</button>
 
                         </div>
                       </div>
                     </div>
-                    </div>
-                    
+
                     <div class="modal modal-fixed-footer" tabindex="-1" role="dialog" id="Modal_edit_teacher<?php echo $i ?>">
                         <div class="modal-content">
                           <h4>Edit Teacher</h4>
@@ -190,6 +187,8 @@
                     </div>
               <?php $i++; endforeach; ?>
             <?php endif; ?>
+        </div>
+                    
       </div>
     <!-- MODALs News-->
     <div id="teacherhassection" class="modal modal-fixed-footer">
@@ -211,7 +210,6 @@
       </div>
 </div>
 
-</div>
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -219,7 +217,7 @@
     $('ul.tabs').tabs();
     $('select').material_select();
     $(".button-collapse").sideNav();
-    $('input#input_text, textarea#textarea1').characterCounter();
+    $('input#idnumber, input#name ,input#lastname,input#username ,input#password, input#passwordconfirm, input#email').characterCounter();
     $('.modal').modal();
     $("#teachercheckedall").change(function () {
       if ($(this).is(':checked')) {

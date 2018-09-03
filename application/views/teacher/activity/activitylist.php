@@ -1,27 +1,6 @@
 <div class="card-panel z-depth-5">
-  <a class="modal-trigger btn waves-effect waves-green grey darken-3" href="#NewActivity"><i class="material-icons right">add_box</i><strong> New Activity</strong></a>
   <button class="btn modal-trigger" href="#activityhasunity"><i class="material-icons right">playlist_add_check</i> Add activity to unity</button>
-  <div id="NewActivity" class="modal modal-fixed-footer">
-    <div class="modal-content">
-      <div class="input-field col s6">
-        <input type="text" class="validate" maxlength="100" required  id="activityname">
-        <label for="activityname">Activity Name</label>
-      </div>
-      <div class="input-field col s6">
-        <textarea id="descriptionleftactivity" class="materialize-textarea validate" required maxlength="500"></textarea>
-        <label for="descriptionleftactivity">DESCRIPTION ACTIVITY LEFT</label>
-      </div>
-      <div class="input-field col s6">
-        <textarea id="descriptionrightactivity" class="materialize-textarea validate" required maxlength="500"></textarea>
-        <label for="descriptionrightactivity">DESCRIPTION ACTIVITY RIGHT</label>
-      </div>
-
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="modal-trigger modal-close btn waves-effect waves-green grey darken-3"><i class="material-icons right">expand_more</i><strong> Done</strong></button>
-      <button type="button" class="btn modal-trigger modal-close green darken-1" id="btnsaveactivity" onclick="saveactivity()"><i class="material-icons right">save</i><strong> Save</strong></button>
-    </div>
-  </div>
+ 
 
 
 
@@ -33,7 +12,7 @@
           <?php $i = 0; foreach ($activity as $fil_activity): ?>
           <?php $checkcount = $i?>
           <div class="row">
-            <div class="col s12 m12">
+            <div class="col s12 m6">
               <div class="card blue-grey lighten-5">
                 <div class="card-content">
                   <p>
@@ -52,7 +31,7 @@
                           <?php $unity_idunity = $fil_ahu->unity_idunity?>
                           <?php $activity_idactivity = $fil_ahu->activity_idactivity ?>
                           <?php echo $fil_unity->unityname ?>
-                          <i id="idsp<?php echo $i?>" onclick="deleterelactivityunity(<?php echo $activity_idactivity?>,<?php echo $unity_idunity?>)" class="close material-icons" >close</i>
+                          <i id="idsp<?php echo $i?>" onclick="deleterelactivityunityteacher(<?php echo $activity_idactivity?>,<?php echo $unity_idunity?>)" class="close material-icons" >close</i>
                         </span>
                       </div>
                       <?php $oi = 0; foreach ($unity_has_section as $filuhs):?>
@@ -93,8 +72,7 @@
                     <?php $o++; endforeach;?>
                   </div>
                   <div class="card-action">
-                    <button class="modal-trigger btn waves-effect waves-green grey lighten-3 black-text" id="btneditactivitymodal<?php echo $i ?>" style="cursor: pointer;" href="#Modal_edit_activity<?php echo $i ?>" data-tooltip="Edit Activity"><i class="material-icons right">edit</i>Edit</button>
-                    <button class="btn modal-trigger red" style="cursor: pointer;" href="#Modal_delete_activity<?php echo $i ?>" data-tooltip="Delete Class" id="btnactivitydeletemodal<?php echo $i ?>" ><i class="material-icons right">delete</i>delete</span>
+                  
                     </div>
                   </div>
                 </div>
@@ -163,7 +141,7 @@
             </div>
             <div class="modal-footer">
               <a class="modal-action modal-close btn waves-effect waves-green grey darken-3"><i class="material-icons right">expand_more</i><strong> Done</strong></a>
-              <a id="btnstudentclass" class="modal-action modal-close btn waves-effect waves-green green darken-1" onclick="activitysaveunity(<?php echo $checkcount?>)"><i class="material-icons right">save</i><strong> Save</strong></a>
+              <a id="btnstudentclass" class="modal-action modal-close btn waves-effect waves-green green darken-1" onclick="activitysaveunityteacher(<?php echo $checkcount?>)"><i class="material-icons right">save</i><strong> Save</strong></a>
             </div>
           </div>
 

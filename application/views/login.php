@@ -20,12 +20,12 @@
             <div class="input-field col s12">
               <span class="input-group-addon"><strong>PASSWORD</strong></span>
               <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-              <input type="password" pattern="[A-Za-z0-9_-]{1,15}" maxlength="30" required class="form-control" id="password" placeholder="password">
+              <input type="password" pattern="[A-Za-z0-9_-]{1,15}" onkeyup="if (event.keyCode == 13) load_user()" maxlength="30" required class="form-control" id="password" placeholder="password">
             </div>
           </form>
         </div>
         <div class="panel-footer">
-          <a type="submit" class="btn waves-effect waves-green white darken-4 btn-large black-text" onclick="load_user()"><i class="material-icons right">lock_open</i> Enter</a>
+          <a type="submit" class="btn waves-effect waves-green white darken-4 btn-large black-text" onkeyup="if (event.keyCode == 13) load_user()" onclick="load_user()"><i class="material-icons right">lock_open</i> Enter</a>
         </div>
         <br>
       </div>

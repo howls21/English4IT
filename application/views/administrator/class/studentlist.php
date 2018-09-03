@@ -1,8 +1,8 @@
 <br>
 <?php $checkcount = 0?>
-<div class="card-panel z-depth-3">
+<div class="">
       <button class="modal-trigger btn waves-effect waves-green grey darken-3" href="#NewStudent"><i class="material-icons left">add_box</i><strong> New Student</strong></button>
-      <button class="btn modal-trigger" href="#StudentHasClass"><i class="material-icons right">playlist_add_check</i> Add Student has Section</button>
+      <button class="btn modal-trigger blue-grey" href="#StudentHasClass"><i class="material-icons right"><div class="chip" ><img src="img/section.png" alt="Contact Person"></div></i><i class="material-icons right">keyboard_tab</i><strong>STUDENT AS SECTION</strong></button>
 
 <br>
           <div id="NewStudent" class="modal modal-fixed-footer">
@@ -10,45 +10,39 @@
               <h4><strong>New Student</strong></h4>
               <div class="col s3">
                 <div class="input-field">
-                  <input type="text" class="validate" maxlength="10" required onkeypress="checkRut(this)" id="studentidnumber">
+                  <input type="text" class="validate" maxlength="10" data-length="10" required onkeypress="checkRut(this)" id="studentidnumber">
                   <label for="studentidnumber">ID Number</label>
                 </div>
               </div>
               <div class="col s8">
                 <div class="input-field">
-                  <input type="text" class="validate" required maxlength="45" onkeypress="return soloLetras(event)" id="studentname">
+                  <input type="text" class="validate" required maxlength="45" data-length="45" onkeypress="return soloLetras(event)" id="studentname">
                   <label for="studentname">Name</label>
                 </div>
               </div>
               <div class="col s6">
                 <div class="input-field">
-                  <input type="text" class="validate" required maxlength="45" onkeypress="return soloLetras(event)"  id="studentlastname">
+                  <input type="text" class="validate" required maxlength="45" data-length="45" onkeypress="return soloLetras(event)"  id="studentlastname">
                   <label for="studentlastname">Lastname</label>
                 </div>
               </div>
               <div class="col s6">
                 <div class="input-field">
-                  <input type="text" class="validate" required maxlength="45" onkeypress="return soloLetras(event)"  id="studentusername">
+                  <input type="text" class="validate" required maxlength="45" data-length="45" onkeypress="return soloLetras(event)"  id="studentusername">
                   <label for="studentusername">User Name</label>
                 </div>
               </div>
-              <div class="col s6">
-                <div class="input-field">
-                  <input type="Password" maxlength="45" class="validate" required  id="studentpassword">
-                  <label for="studentpassword">Password</label>
-                </div>
-              </div>
-              <div class="col s6">
-                <div class="input-field">
-                  <input type="Password" maxlength="45" class="validate" required id="studentpasswordconfirm">
-                  <label for="studentpasswordconfirm">Password Comfirm</label>
-                </div>
-              </div>
+             
               <div class="col s12">
                 <div class="input-field">
-                  <input type="text" class="validate" maxlength="45" required   id="studentemail">
+                  <input type="text" class="validate" maxlength="45" data-length="45" required   id="studentemail">
                   <label for="studentemail">Email</label>
                 </div>
+                <div class="card">
+                <div class="card-content">
+                  <span class="card-title">Password Default is: <strong>"1234"</strong></span>
+                </div>
+              </div>
               </div>
               <div class="col s6">
                 <div class="input-field">
@@ -79,22 +73,24 @@
 </div>
   <p class=""><input type="checkbox" class="filled-in" id="studentcheckedall"/>
     <label for="studentcheckedall">Check all</label></p>
-<div class="card-panel z-depth-3">
+<div class="">
       <div id="check">
+        <br>
+        <div class="">
             <?php if ($student == 0): ?><p>Don't Student!</p><?php else: ?>
               <?php $i = 0; foreach ($student as $fila):?>
               <?php $checkcount = $i?>
-                  <div class="row">
-                    <div class="col s12 m12">
-                      <div class="card blue-grey lighten-5 z-depth-5">
+                  
+                    <div class="col s12 m8 l6">
+                      <div class="card blue-grey lighten-5 z-depth-3">
                         <div class="card-content">
                           <p>
                         <input type="checkbox" id="selectstudent<?php echo $i?>"/>
                         <label for="selectstudent<?php echo $i?>">Select </label></p>
                         <br>
-                        <blockquote>
-                             <strong><?php echo $fila->name ?> <?php echo $fila->lastname?></strong>
-                        </blockquote>
+                        <span class="card-title"> STUDENT: 
+                              <strong><?php echo $fila->name ?> <?php echo $fila->lastname?></strong>
+                        </span>
                           <blockquote><strong>Id Number :</strong> <?php echo $fila->idnumber ?></blockquote>
                           
                           <blockquote><strong>User Name :</strong> <?php echo $fila->username?></blockquote>
@@ -108,8 +104,6 @@
                                             Section :
                                             <?php $idstudent = $filshs->student_idstudent?>
                                             <?php $idsection = $filshs->section_idsection ?>
-                                            <?php $student_role_idrole = $filshs->student_role_idrole ?>
-                                            <?php $student_gender_idgender = $filshs->student_gender_idgender ?>
                                             <?php echo $fil_section->sectionname ?>
                                             <i id="idsp<?php echo $i?>" onclick="deleterelstudentsection(<?php echo $idstudent?>,<?php echo $idsection?>)" class="close material-icons" >close</i>
                                           </span>
@@ -136,13 +130,13 @@
                             <?php $o++; endforeach;?>
                         </div>
                         <div class="card-action">
-                          <button class="btn modal-trigger grey lighten-3 black-text" id="btneditstudentmodal<?php echo $i ?>" style="cursor: pointer;" href="#Modal_edit_student<?php echo $i ?>" data-tooltip="Edit Student"><i class="material-icons right">edit</i>Edit</button>
-                          <button  class="modal-trigger btn red darken-3" id="btndeletestudent<?php echo $i ?>" style="cursor: pointer;" href="#Modal_delete_student<?php echo $i?>"  data-tooltip="Delete Student"><i class="material-icons right">delete</i>Delete</button>
+                          <button class="modal-trigger btn waves-effect waves-green white lighten-3 black-text" id="btneditstudentmodal<?php echo $i ?>" style="cursor: pointer;" href="#Modal_edit_student<?php echo $i ?>" data-tooltip="Edit Student"><i class="material-icons right">edit</i>Edit</button>
+                          <button  class="btn modal-trigger waves-effect waves-red  white red-text" id="btndeletestudent<?php echo $i ?>" style="cursor: pointer;" href="#Modal_delete_student<?php echo $i?>"  data-tooltip="Delete Student"><i class="material-icons right">delete</i>Delete</button>
 
                         </div>
                       </div>
                     </div>
-                    </div>
+                  
                     <div class="modal modal-fixed-footer" tabindex="-1" role="dialog" id="Modal_edit_student<?php echo $i ?>">
                     <div class="modal-content">
                       <h4>Edit Student</h4>
@@ -206,6 +200,7 @@
                   </div>
               <?php $i++; endforeach; ?>
             <?php endif; ?>
+        </div>
       </div>
     <!-- MODALs News-->
     <div id="StudentHasClass" class="modal modal-fixed-footer">
@@ -232,7 +227,7 @@
     $('ul.tabs').tabs();
     $('select').material_select();
     $(".button-collapse").sideNav();
-    $('input#input_text, textarea#textarea1').characterCounter();
+    $('input#studentidnumber, input#studentname, input#studentlastname, input#studentusername,input#studentemail').characterCounter();
     $('.modal').modal();
     $("#studentcheckedall").change(function () {
       if ($(this).is(':checked')) {

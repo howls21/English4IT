@@ -8,10 +8,11 @@
             <li></li>
             <li><a class="btn waves-effect waves-light black" onclick="close_session()"><i class="material-icons right white-text">exit_to_app</i> Log Out</a></li>
         </ul>
-        <ul class="side-nav" id="mobile-demo">
+        <ul class="side-nav black-text" id="mobile-demo">
             <li><a><strong>TEACHER</strong> :</a></li>
             <li><div class="chip"><img  alt="Contact Person" src="img/teacher<?php echo $gender_name ?>.png" > <?php echo $name ?> <?php echo $lastname ?></div></li>
             <li></li>
+
             <li><a class="btn waves-effect waves-light black" onclick="close_session()"><i class="material-icons right white-text">exit_to_app</i> Log Out</a></li>
         </ul>
     </div>
@@ -19,44 +20,80 @@
 <br>
 <!-- BODY PAGE AND BUTTON LIST-->
       <div class="row">
-          <div class="col s12 m3">
-            <ul class="collapsible popout" data-collapsible="accordion">
+          <div class="col s12 m4 l3">
+              <ul class="collapsible popout" data-collapsible="accordion">
                 <li>
-                  <div class="collapsible-header" onclick="classlistadmin()"><i class="material-icons">class</i>CLASS</div>
+                  <div class="collapsible-header" onclick="classlistadmin()">
+                    <div class="chip" ><img src="img/class.png" alt="Contact Person"></div>
+                    <span><strong>CLASS</strong></span>
+                  </div>
                 </li>
                 <li>
-                  <div class="collapsible-header" onclick="sectionlist()"><i class="material-icons">dehaze</i>SECTION</div>
+                  <div class="collapsible-header" onclick="sectionlistadmin()">
+                    <div class="chip" ><img src="img/section.png" alt="Contact Person"></div>
+                    <span><strong>SECTION</strong></span>
+                  </div>
                 </li>
                 <li>
-                  <div class="collapsible-header" onclick="teacherlist()"><i class="material-icons">assignment_ind</i>TEACHERS</div>
+                  <div class="collapsible-header" onclick="teacherlistadmin()">
+                    <div class="chip"><img src="img/teacher.png" alt="Contact Person"></div>
+                      <span><strong>TEACHERS</strong></span>
+                  </div>
                 </li>
                 <li>
-                  <div class="collapsible-header" onclick="studentlistadmin()"><i class="material-icons">face</i>STUDENTS</div>
-                </li>                
-                <li>
-                  <div class="collapsible-header" onclick="unitylistadmin()"><i class="material-icons">view_module</i>UNITYS</div>
+                  <div class="collapsible-header" onclick="studentlistadmin()">
+                    <div class="chip"><img src="img/student-hat.png" alt="Contact Person"></div>
+                            <span><strong>STUDENTS</strong></span>
+                  </div>
                 </li>
                 <li>
-                  <div class="collapsible-header" onclick="activitylistadmin()"><i class="material-icons">extension</i>ACTIVITIES</div>
+                  <div class="collapsible-header" onclick="unitylistadmin()">
+                    <div class="chip"><img src="img/unity.png" alt="Contact Person"></div>
+                          <span><strong>UNIT</strong></span>
+                  </div>
                 </li>
                 <li>
-                  <div class="collapsible-header" onclick="examlistadmin()"><i class="material-icons">done_all</i>Exam</div>
+                  <div class="collapsible-header" onclick="activitylistadmin()">
+                    <div class="chip"><img src="img/activity.png" alt="Contact Person"></div>
+                          <span><strong>ACTIVITIES</strong></span>
+                  </div>
                 </li>
                 <li>
-                  <div class="collapsible-header" onclick="questionlistadmin()"><i class="material-icons">question_answer</i>QUESTIONS AND ANSWERS</div>
+                  <div class="collapsible-header" onclick="examlistadmin()">
+                    <div class="chip"><img src="img/exam.png" alt="Contact Person"></div>
+                          <span><strong>EXAM</strong></span>
+                  </div>
                 </li>
                 <li>
-                  <div class="collapsible-header" onclick="materiallistadmin()"><i class="material-icons">work</i>MATERIALS</div>
+                  <div class="collapsible-header" onclick="questionlistadmin()">
+                    <div class="chip"><img src="img/question.png" alt="Contact Person"></div>
+                          <span><strong>QUESTIONS AND ANSWERS</strong></span>
+                  </div>
                 </li>
                 <li>
-                  <div class="collapsible-header" onclick="glosarylistadmin()"><i class="material-icons">g_translate</i>GLOSSARY</div>
+                  <div class="collapsible-header" onclick="materiallistadmin()">
+                    <div class="chip"><img src="img/folder.png" alt="Contact Person"></div>
+                          <span><strong>MATERIALS</strong></span>
+                  </div>
                 </li>
                 <li>
-                  <div class="collapsible-header" onclick="progresslistadmin()"><i class="material-icons">trending_up</i>PROGRESS</div>
+                  <div class="collapsible-header" onclick="glosarylistadmin()">
+                    <div class="chip"><img src="img/dictionary.png" alt="Contact Person"></div>
+                          <span><strong>GLOSSARY</strong></span>
+                  </div>
+                </li>
+                <li>
+                  <div class="collapsible-header" onclick="progresslistadmin()">
+                    <div class="chip"><img src="img/analytics.png" alt="Contact Person"></div>
+                          <span><strong>PROGRESS</strong></span>
+                  </div>
                 </li>
               </ul>
+
+           
+
           </div>
-            <div class="col s12 m9 19">
+            <div class="col s12 m8 l9">
                 <div id="contentadministrator">
                     
                 </div>
@@ -69,77 +106,15 @@
             <i class="material-icons">menu</i>
         </a>
         <ul>
-            <li><a class="btn-floating blue tooltipped modal-trigger" onclick="$('#modaluploadarchive').modal('open')" data-position="top" data-delay="50" data-tooltip="Upload archive"><i class="material-icons">insert_link</i></a></li>
+            <li></li>
             <li><a class="btn-floating red tooltipped" onclick="$('#modalyoutubelink').modal('open')" data-position="top" data-delay="50" data-tooltip="Youtube Link's"><i class="material-icons">subscriptions</i></a></li>
         </ul>
     </div>
 <!--End Floatting Tooltipped-->
 
-    <!--Modal UploadVideo Structure -->
-        <div id="modaluploadarchive" class="modal modal-fixed-footer">
-        <?php echo form_open_multipart('controller/upload_video'); ?>
-        <div class="modal-content">
-            <h4>Load archive</h4>
-            <br>
-                <div class="input-field col s3">
-                    <input type="text" name="archivename" id="videoinput">
-                    <label for="videoinput" class="active">Name</label>
-                </div>
-                <br>
-                <div class="input-field col s3">
-                    <select name="selectmaterialtype" id="selectmaterialtype">
-                     <?php $io = 0; foreach ($materialtype as $filmaterialtype):?>
-                        <option value="<?php echo $filmaterialtype->idmaterialtype ?>" <?php if ($filmaterialtype->materialtypename === "Youtube") echo "disabled"?>><?php echo $filmaterialtype->materialtypename ?></option>
-                     <?php $io++;  endforeach; ?>
-                    </select>
-                    <label>Select Material Type</label>
-                </div>
-                <br>
 
-        <div class="file-field input-field">
-          <div class="btn">
-            <span>File</span>
-            <input type="file" name="userfile" size="20" />
-          </div>
-              <div class="file-path-wrapper">
-                <input class="file-path validate" type="text">
-              </div>
-            </div>
-            </div>
-            <div class="modal-footer">
-                <a href="#!" class="modal-action modal-close btn waves-effect waves-green red darken-3"><i class="material-icons right">expand_more</i><strong> Done</strong></a>
-                <input class="btn waves-effect waves-green green darken-1" type="submit" value="Save" />
-            </div>
-        </div>
-    <!--End Modal UploadVideo Structure -->
 
-    <!--Modal Upload Youtube Link Structure -->
-        <div id="modalyoutubelink" class="modal modal-fixed-footer">
-            <div class="modal-content">
-                <h4>Youtube Link</h4>
-                    <div class="input-field col s3">
-                        <input type="text" class="validate" maxlength="45" required  id="materialname" value="">
-                        <label for="materialname">Name</label>
-                    </div>
-                    <div class="input-field">
-                        <textarea id="descriptionleft"  class="materialize-textarea" required maxlength="200" ></textarea>
-                        <label for="descriptionleft">Description Left</label>
-                    </div>
-                    <div class="input-field">
-                        <textarea id="descriptionright" class="materialize-textarea" maxlength="200" ></textarea>
-                        <label for="descriptionclassright">Description Right</label>
-                    </div>
-                    <div class="input-field">
-                        <input class="input" type="text" id="uploadyoutubelink">
-                        <label for="uploadyoutubelink">Youtube Link</label>
-                    </div>
-            </div>
-            <div class="modal-footer">
-                <a href="#!" class="modal-action modal-close btn waves-effect waves-green red darken-3"><i class="material-icons right">expand_more</i><strong> Done</strong></a>
-                <a href="#!" class="modal-action modal-close btn waves-effect waves-green green darken-1" onclick="saveyoutubelink()"><i class="material-icons right">save</i> Save</a>
-            </div>
-        </div>
-    <!--End Modal Upload Youtube Link Structure -->
+   
 
 <script type="text/javascript">
     $(document).ready(function () {

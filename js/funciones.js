@@ -1,6 +1,61 @@
 /* global base_url, Materialize */
-    $(document).ready(function () {
+    $(document).ready(
+            	function (e) {
+	$("#uploadimage").on('submit',(function(e) {
+		e.preventDefault();
+		$("#message").empty(); 
+		$('#loading').show();
+		$.ajax({
+        	url: "application/controllers/subir_foto.php",   	// URL a la que se envía la solicitud
+			type: "POST",      				// Tipo de solicitud que se enviará, llamado como método 
+			data:  new FormData(this), 		// Datos enviados al servidor 
+			contentType: false,       		// El tipo de contenido utilizado al enviar datos al servidor. El valor predeterminado es: "application / x-www-form-urlencoded"
+    	    cache: false,					// Para no poder solicitar que las páginas se almacenen en caché
+			processData:false,  			// Para enviar DOMDocument o archivo de datos no procesados, se establece en falso (es decir, los datos no deben estar en forma de cadena)
+			success: function(data)  		// Una función a ser llamada si la solicitud tiene éxito
+		    {
+			$('#loading').hide();
+			$("#message").html(data);			
+		    }	        
+	   });
+	}));
+
+// Función para previsualizar la imagen
+	$(function() {
+        $("#file").change(function() {
+			$("#message").empty();         // Para eliminar el mensaje de error anterior
+			var file = this.files[0];
+			var imagefile = file.type;
+			var match= ["image/jpeg","image/png","image/jpg"];	
+			if(!((imagefile==match[0]) || (imagefile==match[1]) || (imagefile==match[2])))
+			{
+			$('#previewing').attr('src','noimage.png');
+			$("#message").html("<p id='error'>Selecciona un archivo de imagen válido</p>"+"<h4>Nota</h4>"+"<span id='error_message'>Solo jpeg, jpg y png Tipo de imágenes permitidas</span>");
+			return false;
+			}
+            else
+			{
+                var reader = new FileReader();	
+                reader.onload = imageIsLoaded;
+                reader.readAsDataURL(this.files[0]);
+            }		
+        });
+    });
+	function imageIsLoaded(e) { 
+		$("#file").css("color","green");
+        $('#image_preview').css("display", "block");
+        $('#previewing').attr('src', e.target.result);
+		$('#previewing').attr('width', '250px');
+		$('#previewing').attr('height', '230px');
+	};
+        // window.onbeforeunload = function (e) {
+        //     var e = e || window.event;
+        //    if (e) {
+        //      close_session();
+        //    }
+        // }
         //se inicia con la carga del sistema\
+
         charger();});
         //carga el arranque para iniciar sesion
             function charger() {
@@ -14,13 +69,13 @@
                 }, function (datos) {
                     if (datos.message_load_user_s !== "") {
                         //si no esta vacio lanza mensaje de confirmacion
-                        Materialize.toast(datos.message_load_user_s, 4000, 'light-green lighten-4');
+                        Materialize.toast(datos.message_load_user_s, 10000, 'light-green lighten-4');
                     } else if (datos.message_load_user_e !== "") {
                         //si no esta vacio lanza mensaje de error
-                        Materialize.toast(datos.message_load_user_e, 4000, 'red');
+                        Materialize.toast(datos.message_load_user_e, 10000, 'red');
                     } else {
                         //po ultimo si los campos estan vacios lanza mensaje de alerta
-                        Materialize.toast(datos.message_load_user_w, 4000, 'yellow lighten-3');
+                        Materialize.toast(datos.message_load_user_w, 10000, 'yellow lighten-3');
                     }
                     charger();
                 }, 'json');}
@@ -29,11 +84,11 @@
                         function (datos) {
                             if (datos.message_close !== '') {
                                 //si se completa con exito lanza mensaje de confirmacion
-                                Materialize.toast(datos.message_close, 4000, 'red lighten-3');
+                                Materialize.toast(datos.message_close, 10000, 'red lighten-3');
                             } else {
                                 //de los contrario lanza mensaje de error
                                 $message_error = 'Not posible close session';
-                                Materialize.toast($message_error, 4000, 'red lighten-3');
+                                Materialize.toast($message_error, 10000, 'red lighten-3');
                             }
                             charger();
                         }, 'json');}
@@ -46,7 +101,6 @@
             name: $("#name").val(),
             lastname: $("#lastname").val(),
             username: $("#username").val(),
-            password: $("#password").val(),
             passwordconfirm: $("#passwordconfirm").val(),
             email: $("#email").val(),
             gender: idgender
@@ -54,12 +108,12 @@
             var msj_teacher = datos;
             $.each(msj_teacher, function (i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');}
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');}
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');}
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');}
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');}});
-            teacherlist();
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');}});
+            teacherlistadmin();
         }, 'json');}
     function savesection(){
         $.post(base_url + 'controller/savesection',{
@@ -69,16 +123,16 @@
             var msj_section = datos;
             $.each(msj_section, function (i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
-            sectionlist();
+            sectionlistadmin();
         }, 'json');}
     function saveclass() {
         $.post(base_url + 'controller/saveclass', {
@@ -90,13 +144,13 @@
             var msj_load_class = datos;
             $.each(msj_load_class, function (i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             classlistadmin();
@@ -108,21 +162,19 @@
             name: $('#studentname').val(),
             lastname: $('#studentlastname').val(),
             username: $('#studentusername').val(),
-            password: $('#studentpassword').val(),
-            passwordconfirm: $('#studentpasswordconfirm').val(),
             email: $('#studentemail').val(),
             gender_idgender: idgender
         }, function (datos) {
             var savestudent = datos;
             $.each(savestudent, function (i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             studentlistadmin();
@@ -137,13 +189,13 @@
             var msjunity = datos;
             $.each(msjunity, function (i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             unitylistadmin();
@@ -157,34 +209,57 @@
             var msjactivity = datos;
             $.each(msjactivity, function (i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             activitylistadmin();
         }, 'json');}
+    function saveexam(){
+        $.post(base_url + 'controller/saveexam',{
+            examname: $("#examname").val(),
+            descriptionleftexam: $("#descriptionleftexam").val(),
+            descriptionrightexam: $("#descriptionrightexam").val()
+        },function(datos){
+            var msj = datos;
+            $.each(msj, function (i, o) {
+                if (o.msjw !== "") {
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
+                }
+                if (o.msjs !== "") {
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
+                }
+                if (o.msje !== "") {
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
+                }
+            });
+            examlistadmin();
+        },'json');
+    }
     function savequestion(){
         var idquestiontype = document.getElementById("idselectquestiontype").value;
+        var idmode = document.getElementById("idselectmodeq").value;
         $.post(base_url + 'controller/savequestion', {
             questionname: $("#questionname").val(),
             description: $("#questiondescription").val(),
-            idquestiontype: idquestiontype
+            idquestiontype: idquestiontype,
+            idmode: idmode
         }, function (datos) {
             var msjquestion = datos;
             $.each(msjquestion, function (i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             questionlistadmin();
@@ -201,13 +276,13 @@
             var msjanswer = datos;
             $.each(msjanswer, function (i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             questionlistadmin();
@@ -230,13 +305,13 @@
             var msjword = datos;
             $.each(msjword, function (i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             glosarylistadmin();
@@ -250,7 +325,7 @@
         }
         if(checked === 0){
            var msj = "<p class='black-text'><strong>Any student Select</strong></p>";
-             Materialize.toast(msj, 4000, 'yellow lighten-3');
+             Materialize.toast(msj, 10000, 'yellow lighten-3');
         }else{
             for (i = 0; i <= checkload; i++) {
             if($('#selectstudent' + i).prop('checked')){
@@ -263,13 +338,13 @@
             var msjsstudenclass = datos;
             $.each(msjsstudenclass, function (i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             studentlist();
@@ -286,7 +361,7 @@
         }
         if (checked === 0) {
             var msj = "<p class='black-text'><strong>Any Section select</strong></p>";
-            Materialize.toast(msj, 4000, 'yellow lighten-3');
+            Materialize.toast(msj, 10000, 'yellow lighten-3');
         }else{
             for(i = 0; i <= checkload; i++){
                 if ($("#selectsection" + i).prop('checked')) {
@@ -299,16 +374,16 @@
                         var msjs = datos;
                         $.each(msjs, function (i, o) {
                             if (o.msjw !== "") {
-                                Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                                Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                             }
                             if (o.msjs !== "") {
-                                Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                                Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                             }
                             if (o.msje !== "") {
-                                Materialize.toast(o.msje, 4000, 'red lighten-3');
+                                Materialize.toast(o.msje, 10000, 'red lighten-3');
                             }
                         });
-                    sectionlist();
+                    sectionlistadmin();
                     },'json');
                 }
             }
@@ -322,33 +397,29 @@
         }
         if (checked === 0) {
             var msj = "<p class='black-text'><strong>Any teacher select</strong></p>";
-            Materialize.toast(msj, 4000, 'yellow lighten-3');
+            Materialize.toast(msj, 10000, 'yellow lighten-3');
         }else{
             for(i = 0; i <= checkload; i++){
                 if ($("#selectteacher" + i).prop('checked')) {
                     var teacher_idteacher = document.getElementById("id_teacher_edit"+i).value;
-                    var teacher_role_idrole = document.getElementById("id_role_edit"+i).value;
-                    var teacher_gender_idgender = document.getElementById("idselectgender"+i).value;
                     var section_idsection = idsection;
                     $.post(base_url + 'controller/teachersavesection',{
                         teacher_idteacher: teacher_idteacher,
-                        teacher_role_idrole: teacher_role_idrole,
-                        teacher_gender_idgender: teacher_gender_idgender,
                         section_idsection: section_idsection
                     },function(datos){
                         var msjs = datos;
                         $.each(msjs, function (i, o) {
                             if (o.msjw !== "") {
-                                Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                                Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                             }
                             if (o.msjs !== "") {
-                                Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                                Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                             }
                             if (o.msje !== "") {
-                                Materialize.toast(o.msje, 4000, 'red lighten-3');
+                                Materialize.toast(o.msje, 10000, 'red lighten-3');
                             }
                         });
-                    teacherlist();
+                    teacherlistadmin();
                     }, 'json');}
             }
         }
@@ -362,7 +433,7 @@
         }
         if (checked === 0) {
             var msj = "<p class='black-text'><strong>Any unity select</strong></p>";
-            Materialize.toast(msj, 4000, 'yellow lighten-3');
+            Materialize.toast(msj, 10000, 'yellow lighten-3');
         }else{
             for(i = 0; i <= checkload; i++){
                 if ($("#selectunity" + i).prop('checked')) {
@@ -374,16 +445,51 @@
                         var msjs = datos;
                         $.each(msjs, function (i, o) {
                             if (o.msjw !== "") {
-                                Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                                Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                             }
                             if (o.msjs !== "") {
-                                Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                                Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                             }
                             if (o.msje !== "") {
-                                Materialize.toast(o.msje, 4000, 'red lighten-3');
+                                Materialize.toast(o.msje, 10000, 'red lighten-3');
                             }
                         });
                     unitylistadmin();
+                    },'json');}
+            }
+        }
+    }
+        function unitysavesectionteacher(checkload){
+        var checked = 0;
+        var idsection = document.getElementById("idselectsectionunity").value;
+        for (i = 0; i <= checkload; i++) {
+            if($('#selectunity' + i).prop('checked')){
+                checked += 1;}
+        }
+        if (checked === 0) {
+            var msj = "<p class='black-text'><strong>Any unity select</strong></p>";
+            Materialize.toast(msj, 10000, 'yellow lighten-3');
+        }else{
+            for(i = 0; i <= checkload; i++){
+                if ($("#selectunity" + i).prop('checked')) {
+                    var unity_idunity = document.getElementById("editunitid"+i).value;
+                    $.post(base_url + 'controller/unitysavesection',{
+                        unity_idunity: unity_idunity,
+                        section_idsection: idsection
+                    },function(datos){
+                        var msjs = datos;
+                        $.each(msjs, function (i, o) {
+                            if (o.msjw !== "") {
+                                Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
+                            }
+                            if (o.msjs !== "") {
+                                Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
+                            }
+                            if (o.msje !== "") {
+                                Materialize.toast(o.msje, 10000, 'red lighten-3');
+                            }
+                        });
+                    unitylist();
                     },'json');}
             }
         }
@@ -398,7 +504,7 @@
         }
         if (checked === 0) {
             var msj = "<p class='black-text'><strong>Any activity select</strong></p>";
-            Materialize.toast(msj, 4000, 'yellow lighten-3');
+            Materialize.toast(msj, 10000, 'yellow lighten-3');
         }else{
             for(i = 0; i <= checkload; i++){
                 if ($("#selectactivity" + i).prop('checked')) {
@@ -410,16 +516,88 @@
                         var msjs = datos;
                         $.each(msjs, function (i, o) {
                             if (o.msjw !== "") {
-                                Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                                Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                             }
                             if (o.msjs !== "") {
-                                Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                                Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                             }
                             if (o.msje !== "") {
-                                Materialize.toast(o.msje, 4000, 'red lighten-3');
+                                Materialize.toast(o.msje, 10000, 'red lighten-3');
                             }
                         });
                     activitylistadmin();
+                    },'json');}
+            }
+        }
+    }
+        function activitysaveunityteacher(checkload){
+        var checked = 0;
+        var unity_idunity = document.getElementById("idselectactivityunity").value;
+        
+        for (i = 0; i <= checkload; i++) {
+            if($('#selectactivity' + i).prop('checked')){
+                checked += 1;}
+        }
+        if (checked === 0) {
+            var msj = "<p class='black-text'><strong>Any activity select</strong></p>";
+            Materialize.toast(msj, 10000, 'yellow lighten-3');
+        }else{
+            for(i = 0; i <= checkload; i++){
+                if ($("#selectactivity" + i).prop('checked')) {
+                    var activity_idactivity= document.getElementById("id_activity_edit"+i).value;
+                    $.post(base_url + 'controller/activitysaveunity',{
+                        unity_idunity: unity_idunity,
+                        activity_idactivity: activity_idactivity
+                    },function(datos){
+                        var msjs = datos;
+                        $.each(msjs, function (i, o) {
+                            if (o.msjw !== "") {
+                                Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
+                            }
+                            if (o.msjs !== "") {
+                                Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
+                            }
+                            if (o.msje !== "") {
+                                Materialize.toast(o.msje, 10000, 'red lighten-3');
+                            }
+                        });
+                    activitylist();
+                    },'json');}
+            }
+        }
+    }
+    function questionsaveactivity(checkload){
+        var checked = 0;
+        var activity_idactivity= document.getElementById("idselectactactivityquestion").value;
+        
+        for (i = 0; i <= checkload; i++) {
+            if($('#selectquestion' + i).prop('checked')){
+                checked += 1;}
+        }
+        if (checked === 0) {
+            var msj = "<p class='black-text'><strong>Any question select</strong></p>";
+            Materialize.toast(msj, 10000, 'yellow lighten-3');
+        }else{
+            for(i = 0; i <= checkload; i++){
+                if ($("#selectquestion" + i).prop('checked')) {
+                    var question_idquestion = document.getElementById("idEditQuestion"+i).value;
+                    $.post(base_url + 'controller/questionsaveactivity',{
+                        activity_idactivity: activity_idactivity,
+                        question_idquestion: question_idquestion
+                    },function(datos){
+                        var msjs = datos;
+                        $.each(msjs, function (i, o) {
+                            if (o.msjw !== "") {
+                                Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
+                            }
+                            if (o.msjs !== "") {
+                                Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
+                            }
+                            if (o.msje !== "") {
+                                Materialize.toast(o.msje, 10000, 'red lighten-3');
+                            }
+                        });
+                    questionlistadmin();
                     },'json');}
             }
         }
@@ -434,27 +612,25 @@
         }
         if (checked === 0) {
             var msj = "<p class='black-text'><strong>Any activity select</strong></p>";
-            Materialize.toast(msj, 4000, 'yellow lighten-3');
+            Materialize.toast(msj, 10000, 'yellow lighten-3');
         }else{
             for(i = 0; i <= checkload; i++){
                 if ($("#selectmaterial" + i).prop('checked')) {
                     var material_idmaterial = document.getElementById("idmaterial"+i).value;
-                    var material_materialtype_idmaterialtype = document.getElementById("idmaterialtype"+i).value;
                     $.post(base_url + 'controller/materialhasclass',{
                         class_idclass: class_idclass,
-                        material_idmaterial: material_idmaterial,
-                        material_materialtype_idmaterialtype:material_materialtype_idmaterialtype
+                        material_idmaterial: material_idmaterial
                     },function(datos){
                         var msjs = datos;
                         $.each(msjs, function (i, o) {
                             if (o.msjw !== "") {
-                                Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                                Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                             }
                             if (o.msjs !== "") {
-                                Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                                Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                             }
                             if (o.msje !== "") {
-                                Materialize.toast(o.msje, 4000, 'red lighten-3');
+                                Materialize.toast(o.msje, 10000, 'red lighten-3');
                             }
                         });
                     materiallistadmin();
@@ -462,6 +638,7 @@
             }
         }
     }
+
     function studentsavesection(checkload){
         var checked = 0;
         var idsection = document.getElementById("idselectsectionstudent").value;
@@ -471,7 +648,43 @@
         }
         if (checked === 0) {
             var msj = "<p class='black-text'><strong>Any student select</strong></p>";
-            Materialize.toast(msj, 4000, 'yellow lighten-3');
+            Materialize.toast(msj, 10000, 'yellow lighten-3');
+        }else{
+            for(i = 0; i <= checkload; i++){
+                if ($("#selectstudent" + i).prop('checked')) {
+                    var student_idstudent = document.getElementById("id_student_edit"+i).value;
+                    var section_idsection = idsection;
+                $.post(base_url + 'controller/studentsavesection',{
+                        student_idstudent: student_idstudent,
+                        section_idsection: section_idsection
+                    },function(datos){
+                        var msjs = datos;
+                        $.each(msjs, function (i, o) {
+                            if (o.msjw !== "") {
+                                Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
+                            }
+                            if (o.msjs !== "") {
+                                Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
+                            }
+                            if (o.msje !== "") {
+                                Materialize.toast(o.msje, 10000, 'red lighten-3');
+                            }
+                        });
+                    studentlistadmin();
+                    }, 'json');}
+            } 
+        }
+    }
+    function studentsavesectionteacher(checkload){
+        var checked = 0;
+        var idsection = document.getElementById("idselectsectionstudent").value;
+        for (i = 0; i <= checkload; i++) {
+            if($('#selectstudent' + i).prop('checked')){
+                checked += 1;}
+        }
+        if (checked === 0) {
+            var msj = "<p class='black-text'><strong>Any student select</strong></p>";
+            Materialize.toast(msj, 10000, 'yellow lighten-3');
         }else{
             for(i = 0; i <= checkload; i++){
                 if ($("#selectstudent" + i).prop('checked')) {
@@ -488,16 +701,16 @@
                         var msjs = datos;
                         $.each(msjs, function (i, o) {
                             if (o.msjw !== "") {
-                                Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                                Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                             }
                             if (o.msjs !== "") {
-                                Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                                Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                             }
                             if (o.msje !== "") {
-                                Materialize.toast(o.msje, 4000, 'red lighten-3');
+                                Materialize.toast(o.msje, 10000, 'red lighten-3');
                             }
                         });
-                    studentlistadmin();
+                    studentlist();
                     }, 'json');}
             } 
         }
@@ -512,17 +725,79 @@
             var msjsstuden = datos;
             $.each(msjsstuden, function (i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             studentlistadmin();
         },'json');}
+    function deletematerial(idmaterial){
+        $idmaterial = idmaterial
+        $.post(base_url + 'controller/deletematerial',{
+            idmaterial: $idmaterial
+        },function(datos){
+            var msjs = datos;
+            $.each(msjs, function (i, o) {
+                if (o.msjw !== "") {
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
+                }
+                if (o.msjs !== "") {
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
+                }
+                if (o.msje !== "") {
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
+                }
+            });
+            materiallistadmin();
+        },'json');}
+    function deleterelstudentsectionadmin(student_idstudent,section_idsection){
+        $student_idstudent = student_idstudent;
+        $section_idsection = section_idsection;
+        $.post(base_url + 'controller/deleterelstudentsection',{
+            student_idstudent: $student_idstudent,
+            section_idsection: $section_idsection
+        },function(datos){
+            var msjsstuden = datos;
+            $.each(msjsstuden, function (i, o) {
+                if (o.msjw !== "") {
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
+                }
+                if (o.msjs !== "") {
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
+                }
+                if (o.msje !== "") {
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
+                }
+            });
+            studentlistadmin();
+        },'json');}
+    function deleterelstudentsectionteacher(student_idstudent,section_idsection){
+        $student_idstudent = student_idstudent;
+        $section_idsection = section_idsection;
+        $.post(base_url + 'controller/deleterelstudentsection',{
+            student_idstudent: $student_idstudent,
+            section_idsection: $section_idsection
+        },function(datos){
+            var msjsstuden = datos;
+            $.each(msjsstuden, function (i, o) {
+                if (o.msjw !== "") {
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
+                }
+                if (o.msjs !== "") {
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
+                }
+                if (o.msje !== "") {
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
+                }
+            });
+            studentlist();
+        },'json');}
+
     function deleterelsectionclass(section_idsection,class_idclass){
         $.post(base_url + 'controller/deleterelsectionclass',{
             section_idsection: section_idsection,
@@ -531,13 +806,32 @@
             var msj = datos;
             $.each(msj , function(i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
+                }
+            });
+            sectionlistadmin();
+        },'json');}
+    function deleterelsectionclassteacher(section_idsection,class_idclass){
+        $.post(base_url + 'controller/deleterelsectionclass',{
+            section_idsection: section_idsection,
+            class_idclass: class_idclass
+        },function(datos){
+            var msj = datos;
+            $.each(msj , function(i, o) {
+                if (o.msjw !== "") {
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
+                }
+                if (o.msjs !== "") {
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
+                }
+                if (o.msje !== "") {
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             sectionlist();
@@ -550,34 +844,53 @@
             var msj = datos;
             $.each(msj , function(i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             activitylistadmin();
         },'json');
     }
-    function deleterelmaterialclass(material_idmaterial,material_materialtype_idmaterialtype,class_idclass){
+    function deleterelactivityunityteacher(activity_idactivity,unity_idunity){
+        $.post(base_url + 'controller/deleterelactivityunity',{
+            activity_idactivity: activity_idactivity,
+            unity_idunity: unity_idunity
+        },function(datos){
+            var msj = datos;
+            $.each(msj , function(i, o) {
+                if (o.msjw !== "") {
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
+                }
+                if (o.msjs !== "") {
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
+                }
+                if (o.msje !== "") {
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
+                }
+            });
+            activitylist();
+        },'json');
+    }
+    function deleterelmaterialclass(material_idmaterial,class_idclass){
                 $.post(base_url + 'controller/deleterelmaterialclass',{
             material_idmaterial: material_idmaterial,
-            material_materialtype_idmaterialtype: material_materialtype_idmaterialtype,
             class_idclass: class_idclass
         },function(datos){
             var msj = datos;
             $.each(msj , function(i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             materiallistadmin();
@@ -591,16 +904,16 @@
             var msj = datos;
             $.each(msj , function(i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
-            teacherlist();
+            teacherlistadmin();
         }, 'json');}
     function deleterelunitysection(section_idsection,unity_idunity){
         $.post(base_url + 'controller/deleterelunitysection',{
@@ -610,16 +923,35 @@
             var msj = datos;
             $.each(msj , function(i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             unitylistadmin();
+        },'json');}
+        function deleterelunitysectionteacher(section_idsection,unity_idunity){
+        $.post(base_url + 'controller/deleterelunitysection',{
+            section_idsection: section_idsection,
+            unity_idunity: unity_idunity
+        },function(datos){
+            var msj = datos;
+            $.each(msj , function(i, o) {
+                if (o.msjw !== "") {
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
+                }
+                if (o.msjs !== "") {
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
+                }
+                if (o.msje !== "") {
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
+                }
+            });
+            unitylist();
         },'json');}
     function materialsaveactivity(checkload){
         var checked = 0;
@@ -631,7 +963,7 @@
         }
         if(checked === 0){
             var msj = "<p class='black-text'><strong>Any material Select</strong></p>";
-            Materialize.toast(msj, 4000, 'yellow lighten-3');
+            Materialize.toast(msj, 10000, 'yellow lighten-3');
         }else{
             for (i = 0; i <= checkload; i++) {
                 if($("#selectmaterial" + i).prop('checked')){
@@ -643,13 +975,13 @@
                         var msjsstudenclass = datos;
                         $.each(msjsstudenclass, function (i, o) {
                             if (o.msjw !== "") {
-                                Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                                Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                             }
                             if (o.msjs !== "") {
-                                Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                                Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                             }
                             if (o.msje !== "") {
-                                Materialize.toast(o.msje, 4000, 'red lighten-3');
+                                Materialize.toast(o.msje, 10000, 'red lighten-3');
                             }
                         });
                         materiallist();
@@ -669,13 +1001,13 @@
             var msjclassedit = datos;
             $.each(msjclassedit, function (i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             classlistadmin();
@@ -690,13 +1022,13 @@
             var msj = datos;
             $.each(msj, function (i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             glosarylistadmin();
@@ -711,13 +1043,13 @@
             var $msj = datos;
                 $.each($msj, function (i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             sectionlist();
@@ -738,13 +1070,13 @@
             var msjunit = datos;
             $.each(msjunit, function (i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             unitylistadmin();
@@ -764,13 +1096,13 @@
                 var msjstudentedit = msjdate;
                 $.each(msjstudentedit, function (i, o) {
                     if (o.msjw !== "") {
-                        Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                        Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                     }
                     if (o.msjs !== "") {
-                        Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                        Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                     }
                     if (o.msje !== "") {
-                        Materialize.toast(o.msje, 4000, 'red lighten-3');
+                        Materialize.toast(o.msje, 10000, 'red lighten-3');
                     }
                     studentlist();
                 });
@@ -789,19 +1121,75 @@
             var msjactivity = datos;
             $.each(msjactivity, function (i, o) {
                 if (o.msjw !== "") {
-                    Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                 }
                 if (o.msjs !== "") {
-                    Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                 }
                 if (o.msje !== "") {
-                    Materialize.toast(o.msje, 4000, 'red lighten-3');
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
                 }
             });
             activitylistadmin();
         }, 'json');}
+    function updatequestion(id){
+        var idquestion = $("#idEditQuestion"+id).val();
+        var questionname = $("#editquestionname"+id).val();
+        var description = $("#addanswerdescription"+id).val();
+        var idquestiontype = document.getElementById("idselectquestiontype"+id).value;
+        var idmode = document.getElementById("idselectmode"+id).value;
+        $.post(base_url + 'controller/updatequestion',{
+            idquestion: idquestion,
+            questionname: questionname,
+            description: description,
+            idquestiontype: idquestiontype,
+            idmode: idmode
+        },function(datos){
+            var msj = datos;
+            $.each(msj, function (i, o) {
+                if (o.msjw !== "") {
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
+                }
+                if (o.msjs !== "") {
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
+                }
+                if (o.msje !== "") {
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
+                }
+            });
+            questionlistadmin();
+        },'json');
+    }
+    function updateanswer(id){
+        var idanswer = $("#idEditAnswer"+id).val();
+        var answername = $("#editanswername"+id).val();
+        var answerdescription = $("#editanswerdescription"+id).val();
+        var idvalue = document.getElementById("editselectvalueanswer"+id).value;
+        var idquestion = document.getElementById("idQuestionanswer"+id).value;
+        $.post(base_url + 'controller/updateanswer',{
+            idanswer: idanswer,
+            answername: answername,
+            description: answerdescription,
+            value_idvalue: idvalue,
+            question_idquestion: idquestion
+        },function(datos){
+            var msj = datos;
+            $.each(msj, function (i, o) {
+                if (o.msjw !== "") {
+                    Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
+                }
+                if (o.msjs !== "") {
+                    Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
+                }
+                if (o.msje !== "") {
+                    Materialize.toast(o.msje, 10000, 'red lighten-3');
+                }
+            });
+            questionlistadmin();
+        },'json');
+    }
 //Load View
-    function teacherlist() {
+    function teacherlistadmin() {
         $.post(base_url + 'controller/teacherlist', {}, function (page, datos) {
             $("#contentadministrator").html(page, datos);
         }), 'json';}
@@ -815,6 +1203,17 @@
         });}
     function sectionlist(){
         $.post(base_url + 'controller/sectionlist', {}, function (page, datos){
+            $("#contentteacher").html(page, datos);
+        });}
+    function sectionunity(idsection){
+        $.post(base_url + 'controller/sectionunity', {
+            idsection: idsection
+        }, function (page, datos){
+            $("#contentstudent").html(page, datos);
+        });
+    }
+    function sectionlistadmin(){
+        $.post(base_url + 'controller/sectionlist', {}, function (page, datos){
             $("#contentadministrator").html(page, datos);
         });}
     function classlist() {
@@ -824,30 +1223,55 @@
     function classlistadmin() {
         $.post(base_url + 'controller/classlist', {}, function (page, datos) {
             $("#contentadministrator").html(page, datos);
+            $('#collapsible').collapsible('active');
         });}
     function unitylistadmin() {
         $.post(base_url + 'controller/unitylist', {}, function (page, datos) {
             $("#contentadministrator").html(page, datos);
         });}
+    function unitylist(){
+        $.post(base_url + 'controller/unitylist', {}, function (page, datos) {
+            $("#contentteacher").html(page, datos);
+        });}
     function activitylistadmin() {
         $.post(base_url + 'controller/activitylist', {}, function (page, datos) {
             $("#contentadministrator").html(page, datos);
+        });}
+    function activitylist(){
+        $.post(base_url + 'controller/activitylist', {}, function (page, datos) {
+            $("#contentteacher").html(page, datos);
         });}
     function examlistadmin() {
         $.post(base_url + 'controller/examlist', {}, function (page, datos) {
             $("#contentadministrator").html(page, datos);
         });}
+    function examlist() {
+        $.post(base_url + 'controller/examlist', {}, function (page, datos) {
+            $("#contentteacher").html(page, datos);
+        });}
     function questionlistadmin(){
         $.post(base_url + 'controller/questionlist', {}, function (page, datos) {
             $("#contentadministrator").html(page, datos);
+        });}
+    function questionlist(){
+        $.post(base_url + 'controller/questionlist', {}, function (page, datos) {
+            $("#contentteacher").html(page, datos);
         });}
     function materiallistadmin() {
         $.post(base_url + 'controller/materiallist', {}, function (page, datos) {
             $("#contentadministrator").html(page, datos);
         });}
+    function materiallist() {
+        $.post(base_url + 'controller/materiallist', {}, function (page, datos) {
+            $("#contentteacher").html(page, datos);
+        });}
     function glosarylistadmin(){
         $.post(base_url + 'controller/glosarylist', {}, function (page, datos) {
             $("#contentadministrator").html(page, datos);
+        });}
+    function glosarylist(){
+        $.post(base_url + 'controller/glosarylist', {}, function (page, datos) {
+            $("#contentteacher").html(page, datos);
         });}
     function progresslistadmin(){
         $.post(base_url + 'controller/progresslist', {}, function (page, datos) {
@@ -856,22 +1280,22 @@
 //editar y eliminar
         function deleteteacher(id){
         	$.post(base_url + 'controller/deleteteacher',{
-        		idteacher: $("#idteacher"+id).val(),
-        		idteacher: $("#idteacher"+id).val(),
+        		idteacher: $("#id_teacher_edit"+id).val(),
         		password: $("#teacherpassworddelete"+id).val()
         	},function(datos){
         		var msjdeleteteacher = datos;
                 $.each(msjdeleteteacher, function (i, o) {
                     if (o.msjw !== "") {
-                        Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                        Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                     }
                     if (o.msjs !== "") {
-                        Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                        Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                     }
                     if (o.msje !== "") {
-                        Materialize.toast(o.msje, 4000, 'red lighten-3');
+                        Materialize.toast(o.msje, 10000, 'red lighten-3');
                     }
                 });
+                teacherlistadmin();
         	},'json');}
         function deleteclass(id){
             $.post(base_url  + 'controller/deleteclass',{
@@ -881,13 +1305,13 @@
                 var msjdeleteclass = datos;
                 $.each(msjdeleteclass, function (i, o) {
                     if (o.msjw !== "") {
-                        Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                        Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                     }
                     if (o.msjs !== "") {
-                        Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                        Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                     }
                     if (o.msje !== "") {
-                        Materialize.toast(o.msje, 4000, 'red lighten-3');
+                        Materialize.toast(o.msje, 10000, 'red lighten-3');
                     }
                 });
                 classlistadmin();
@@ -900,16 +1324,16 @@
                 var msj = datos;
                 $.each(msj, function (i, o) {
                     if (o.msjw !== "") {
-                        Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                        Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                     }
                     if (o.msjs !== "") {
-                        Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                        Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                     }
                     if (o.msje !== "") {
-                        Materialize.toast(o.msje, 4000, 'red lighten-3');
+                        Materialize.toast(o.msje, 10000, 'red lighten-3');
                     }
                 });
-                sectionlist();
+                sectionlistadmin();
             },'json');}
         function deleteunity(id){
             $.post(base_url  + 'controller/deleteunity',{
@@ -919,16 +1343,16 @@
                 var msjdeleteclass = datos;
                 $.each(msjdeleteclass, function (i, o) {
                     if (o.msjw !== "") {
-                        Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                        Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                     }
                     if (o.msjs !== "") {
-                        Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                        Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                     }
                     if (o.msje !== "") {
-                        Materialize.toast(o.msje, 4000, 'red lighten-3');
+                        Materialize.toast(o.msje, 10000, 'red lighten-3');
                     }
                 });
-                unitylist();
+                unitylistadmin();
             },'json');}
         function deleteactivity(id){
             $.post(base_url + 'controller/deleteactivity',{
@@ -938,17 +1362,37 @@
                 var msjdeleteactivity = datos;
                 $.each(msjdeleteactivity, function (i, o) {
                     if (o.msjw !== "") {
-                        Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                        Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                     }
                     if (o.msjs !== "") {
-                        Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                        Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                     }
                     if (o.msje !== "") {
-                        Materialize.toast(o.msje, 4000, 'red lighten-3');
+                        Materialize.toast(o.msje, 10000, 'red lighten-3');
                     }
                 });
-                activitylist();
+                activitylistadmin();
             },'json');}
+        function deletequestion(id){
+            $.post(base_url + 'controller/deletequestion',{
+                password: $('#deletequestionValidate'+ id).val(),
+                idquestion: $('#idEditQuestion'+id).val()
+            },function(datos){
+                var msjdeleteactivity = datos;
+                $.each(msjdeleteactivity, function (i, o) {
+                    if (o.msjw !== "") {
+                        Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
+                    }
+                    if (o.msjs !== "") {
+                        Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
+                    }
+                    if (o.msje !== "") {
+                        Materialize.toast(o.msje, 10000, 'red lighten-3');
+                    }
+                });
+                questionlistadmin();
+            },'json');
+        }
         function deleteStudent(id){
             $.post(base_url  + 'controller/deleteStudent',{
                     idstudent: $("#id_student_edit"+id).val(),
@@ -957,13 +1401,13 @@
                     var msjdeleteclass = datos;
                     $.each(msjdeleteclass, function (i, o) {
                         if (o.msjw !== "") {
-                            Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                            Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                         }
                         if (o.msjs !== "") {
-                            Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                            Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                         }
                         if (o.msje !== "") {
-                            Materialize.toast(o.msje, 4000, 'red lighten-3');
+                            Materialize.toast(o.msje, 10000, 'red lighten-3');
                         }
                     });
                     studentlistadmin();
@@ -976,13 +1420,13 @@
                 var msj = datos;
                     $.each(msj, function (i, o) {
                         if (o.msjw !== "") {
-                            Materialize.toast(o.msjw, 4000, 'yellow lighten-3');
+                            Materialize.toast(o.msjw, 10000, 'yellow lighten-3');
                         }
                         if (o.msjs !== "") {
-                            Materialize.toast(o.msjs, 4000, 'light-green lighten-4');
+                            Materialize.toast(o.msjs, 10000, 'light-green lighten-4');
                         }
                         if (o.msje !== "") {
-                            Materialize.toast(o.msje, 4000, 'red lighten-3');
+                            Materialize.toast(o.msje, 10000, 'red lighten-3');
                         }
                     });
                     glosarylistadmin();

@@ -112,17 +112,16 @@ class Modelo extends CI_Model{
 
    			return  $insert_id;
 		}
-		function savelogend($fecha,$username,$role_idrole){
+		function savelogend($idlog,$fecha,$username,$role_idrole){
 			$addlog = array(
-				'start' => null,
 				'end' => $fecha,
 				'username' => $username,
 				'role_idrole' => $role_idrole
 			);
-			$this->db->insert('log',$addlog);
-			$insert_id = $this->db->insert_id();
+			$this->db->where('idlog', $idlog);
+			$this->db->update('log',$addlog);
 
-   			return  $insert_id;
+   			return  true;
 		}
 		function savestudenthaslog($student_idstudent, $role_idrole, $idlog){
 			$addstudenthaslog = array(
@@ -244,7 +243,19 @@ class Modelo extends CI_Model{
                 }
             return $idmaterialtype;
         }
+        function buscamaterialxid($idmaterial){
+        	$this->db->select('*');
+        	$this->db->where('idmaterial', $idmaterial);
+        	$res = $this->db->get('material');
 
+        	$result = "";
+
+        	foreach ($res->result() as $fila) {
+        		$result = $fila->route;
+        	}
+
+        	return $result;
+        }
 	function studentexist($idnumber){
 	//valida si existe el rut que se intenta ingresar
 		$this->db->select('*');
@@ -313,7 +324,7 @@ class Modelo extends CI_Model{
             	return true;
         	}
         }
-        function teachersavesection($teacher_idteacher,$teacher_role_idrole,$teacher_gender_idgender,$section_idsection){
+        function teachersavesection($teacher_idteacher,$section_idsection){
         	$this->db->select('*');
         	$this->db->where('teacher_idteacher', $teacher_idteacher);
         	$this->db->where('section_idsection', $section_idsection);
@@ -324,8 +335,6 @@ class Modelo extends CI_Model{
         	}else{
         		$insert_ths = array(
         			'teacher_idteacher' => $teacher_idteacher,
-        			'teacher_role_idrole' => $teacher_role_idrole,
-        			'teacher_gender_idgender' => $teacher_gender_idgender,
         			'section_idsection' => $section_idsection
         		);
         		$this->db->insert('teacher_has_section', $insert_ths);
@@ -336,6 +345,7 @@ class Modelo extends CI_Model{
         function unitysavesection($unity_idunity,$section_idsection){
         	$this->db->select('*');
         	$this->db->where('unity_idunity',$unity_idunity);
+        	$this->db->where('section_idsection', $section_idsection);
         	$res = $this->db->get('unity_has_section');
 
         	if ($res->num_rows() != 0) {
@@ -366,11 +376,10 @@ class Modelo extends CI_Model{
         	return true;
         	}
         }
-        function materialhasclass($class_idclass, $material_idmaterial,$material_materialtype_idmaterialtype){
+        function materialhasclass($class_idclass, $material_idmaterial){
         	$this->db->select('*');
         	$this->db->where('class_idclass',$class_idclass);
         	$this->db->where('material_idmaterial',$material_idmaterial);
-        	$this->db->where('material_materialtype_idmaterialtype',$material_materialtype_idmaterialtype);
         	$res = $this->db->get('material_has_class');
 
         	if ($res->num_rows() != 0) {
@@ -378,14 +387,13 @@ class Modelo extends CI_Model{
         	}else{
         		$insert_mhc = array(
         			'class_idclass' => $class_idclass,
-        			'material_idmaterial' => $material_idmaterial,
-        			'material_materialtype_idmaterialtype' => $material_materialtype_idmaterialtype
+        			'material_idmaterial' => $material_idmaterial
         		);
         	$this->db->insert('material_has_class', $insert_mhc);
         	return true;
         	}
         }
-        function studentsavesection($student_idstudent,$student_role_idrole,$student_gender_idgender,$section_idsection){
+        function studentsavesection($student_idstudent,$section_idsection){
         	$this->db->select('*');
         	$this->db->where('student_idstudent', $student_idstudent);
         	$this->db->where('section_idsection', $section_idsection);
@@ -394,13 +402,36 @@ class Modelo extends CI_Model{
         	if ($res->num_rows() != 0) {
         		return false;
         	}else{
-        		$insert_shs = array(
+        			$insert_shs = array(
         			'student_idstudent' => $student_idstudent,
-        			'student_role_idrole' => $student_role_idrole,
-        			'student_gender_idgender' => $student_gender_idgender,
         			'section_idsection' => $section_idsection
         		);
         		$this->db->insert('student_has_section', $insert_shs);
+        		return true;
+        	}
+        }
+        function questionsaveactivity($activity_idactivity,$question_idquestion){
+        	$this->db->select('*');
+        	$this->db->where('activity_idactivity', $activity_idactivity);
+        	$this->db->where('question_idquestion', $question_idquestion);
+        	$res = $this->db->get('question_has_activity');
+
+        	if ($res->num_rows() != 0) {
+        		return false;
+        	}else{
+        		$this->db->select('*');
+        		$this->db->where('idquestion', $question_idquestion);
+        		$res2 = $this->db->get('question');
+        		$idquestiontype = "";
+        		foreach ($res2->result() as $fila) {
+        			$idquestiontype = $fila->questiontype_idquestiontype;
+        		}
+        		$insert_qha = array(
+        			'question_idquestion' => $question_idquestion,
+        			'question_questiontype_idquestiontype' => $idquestiontype,
+        			'activity_idactivity' => $activity_idactivity
+        		);
+        		$this->db->insert('question_has_activity', $insert_qha);
         		return true;
         	}
         }
@@ -436,6 +467,28 @@ class Modelo extends CI_Model{
 	        	$this->db->where('class_idclass', $class_idclass);
 	        	$this->db->delete('section_has_class');
 	        	return true;
+        	}else{
+        		return false;
+        	}
+        }
+        function deleterelmaterialclass($material_idmaterial,$class_idclass){
+        	
+        		$this->db->where('material_idmaterial', $material_idmaterial);
+        		$this->db->where('class_idclass', $class_idclass);
+        		$this->db->delete('material_has_class');
+        		return true;
+        	
+        }
+
+        function deletematerial($idmaterial){
+        	$this->db->select('*');
+        	$this->db->where('material_idmaterial', $idmaterial);
+        	$res = $this->db->get('material_has_class');
+
+        	if($res->num_rows() == 0){
+        		$this->db->where('idmaterial', $idmaterial);
+        		$this->db->delete('material');
+        		return true;
         	}else{
         		return false;
         	}
@@ -559,11 +612,12 @@ class Modelo extends CI_Model{
             return true;
         }
         
-        function savequestion($questionname,$description,$idquestiontype){
+        function savequestion($questionname,$description,$idquestiontype,$idmode){
             $insertquestion = array(
                 'questionname' => $questionname,
                 'description' => $description,
-                'questiontype_idquestiontype' => $idquestiontype
+                'questiontype_idquestiontype' => $idquestiontype,
+                'mode_idmode' => $idmode
             );
             $this->db->insert('question', $insertquestion);
             return true;
@@ -651,6 +705,10 @@ class Modelo extends CI_Model{
         	$this->db->select('*');
         	return $this->db->get('questiontype');
         }
+        function mode(){
+        	$this->db->select('*');
+        	return $this->db->get('mode');
+        }
         function question_has_activity(){
         	$this->db->select('*');
         	return $this->db->get('question_has_activity');
@@ -684,7 +742,15 @@ function glosarylist(){
             return $this->db->get('glosary');
         }
 
-
+function loglist(){
+	$this->db->select('*');
+	return $this->db->get('log');}
+function student_has_log(){
+	$this->db->select('*');
+	return $this->db->get('student_has_log');}
+function teacher_has_log(){
+	$this->db->select('*');
+	return $this->db->get('teacher_has_log');}
 function studenthassection(){
 	//busca la lista con la relación entre las clases con los estudiantes
 	$this->db->select('*');
@@ -771,21 +837,65 @@ function material_has_class(){
             $this->db->update('activity', $queryactivity);
             return true;
         }
+        function updatequestion($idquestion,$questionname,$description,$idquestiontype,$idmode){
+        	$queryquestion = array(
+        		'questionname' => $questionname,
+        		'description' => $description,
+        		'questiontype_idquestiontype' => $idquestiontype,
+        		'mode_idmode' => $idmode
+        	);
+        	$this->db->where('idquestion', $idquestion);
+        	$this->db->update('question', $queryquestion);
+        	return true;
+        }
+        function updateanswer($idanswer,$answername,$description,$value_idvalue,$question_idquestion){
+        	$queryanswer = array(
+        		'answername' => $answername,
+        		'description' => $description,
+        		'value_idvalue' => $value_idvalue,
+        		'question_idquestion' => $question_idquestion
+        	);
+        	$this->db->where('idanswer', $idanswer);
+        	$this->db->update('answer',$queryanswer);
+        	return true;
+        }
+	function deleteteacher($idteacher){
+		##validar si el docente está asociado a alguna sección antes de intentar eliminar.
+		$this->db->select('*');
+		$this->db->where('teacher_idteacher',$idteacher);
+		$res = $this->db->get('teacher_has_section');
 
-	function deleteteacher($idteacher, $role_idrole, $gender_idgender){
-		$this->db->query("DELETE FROM `teacher` WHERE `teacher`.`idteacher` = $idteacher AND `teacher`.`role_idrole` = $role_idrole AND `teacher`.`gender_idgender` = $gender_idgender");
-		return true;
+		$this->db->select('*');
+		$this->db->where('teacher_idteacher',$idteacher);
+		$res2 = $this->db->get('teacher_has_log');
+
+		if($res->num_rows() == 0 & $res2->num_rows() == 0 ){
+			$this->db->query("DELETE FROM `teacher` WHERE `idteacher` = $idteacher");
+			return true;
+		}else{
+			return false;
+		}
+		return false;
 	}
         
     function deleteclass($idclass){
     	// consultar si existe una actividad
     	$this->db->select('*');
     	$this->db->where('class_idclass', $idclass);
-    	$res = $this->db->get('section_has_class');
+    	$resSC = $this->db->get('section_has_class');
 
-    	if ($res->num_rows() == 0 ) {
-    		$this->db->query("DELETE FROM `class` WHERE `idclass` = '$idclass' ");
-    		return true;
+    	if ($resSC->num_rows() === 0 ) {
+
+    		$this->db->select('1');
+    		$this->db->where('class_idclass', $idclass);
+    		$resMC = $this->db->get('material_has_class');
+
+    		if ($resMC->num_rows() === 0) {
+    			$this->db->query("DELETE FROM `class` WHERE `class`.`idclass` = $idclass");
+    		return true;	
+    		}else{
+    			return false;
+    		}
     	}else{
     		return false;
     	}
@@ -793,11 +903,19 @@ function material_has_class(){
     function deleteactivity($idactivity){
     	$this->db->select('*');
     	$this->db->where('activity_idactivity',$idactivity);
-    	$res = $this->db->get('question');
+    	$res = $this->db->get('question_has_activity');
 
     	if ($res->num_rows() == 0) {
-    		$this->db->query("DELETE FROM `activity` WHERE `idactivity` = '$idactivity' ");
-    		return true;
+    		$this->db->select('*');
+	    	$this->db->where('activity_idactivity',$idactivity);
+	    	$res2 = $this->db->get('activity_has_unity');
+
+	    	if($res2->num_rows() == 0){
+	    		$this->db->query("DELETE FROM `activity` WHERE `idactivity` = '$idactivity' ");
+	    		return true;
+	    	}else{
+	    		return false;	
+	    	}
     	}else{
     		return false;
     	}
@@ -824,6 +942,18 @@ function material_has_class(){
     	}
 
     }
+    function deletequestion($idquestion){
+		#Preguntar si tiene respuestas asociadas a sus preguntas 
+    	#si no tiene nada relacionado con el estudiante, debería permitir eliminar.
+
+    	#de momento elimina sin preguntar porque el modulo alumno no está relacionado.
+    	$this->db->query("DELETE FROM question_has_activity WHERE question_idquestion = $idquestion");
+    	$this->db->query("DELETE FROM `answer` WHERE `question_idquestion` = $idquestion");
+    	$this->db->query("DELETE FROM `question` WHERE `idquestion` = $idquestion");
+
+    		return true;
+
+    }
     function deleteStudent($idstudent){
 
     	// consultar si existe una actividad
@@ -841,11 +971,18 @@ function material_has_class(){
     function deleteunity($idunity){
         $this->db->select('*');
         $this->db->where('unity_idunity',$idunity);
-        $res = $this->db->get('activity');
+        $res = $this->db->get('activity_has_unity');
         
         if($res->num_rows() == 0){
-            $this->db->query("DELETE FROM `unity` WHERE `idunity` = '$idunity'");
-    		return true;
+			$this->db->select('*');
+	        $this->db->where('unity_idunity',$idunity);
+	        $res2 = $this->db->get('unity_has_section');
+	        if($res2->num_rows() == 0){
+	            $this->db->query("DELETE FROM `unity` WHERE `idunity` = '$idunity'");
+	    		return true;
+	    	}else{
+	    		return false;
+	    	}
         }else{
             return false;
         }
@@ -894,24 +1031,22 @@ function material_has_class(){
     }
 
 //Student
-    function studentunit($idstudent){
+    function studentsection($idstudent){
     	$this->db->select('*');
     	$this->db->where('student_idstudent',$idstudent);
-    	$query = $this->db->get('student_has_class');
+    	$query = $this->db->get('student_has_section');
 
-    	$idclass = "";
-    	$idteacher = "";
+    	$idsection = "";
 
 		foreach ($query->result() as $fila) {
-                $idclass = $fila->class_idclass;
-                $idteacher = $fila->class_teacher_idteacher;
+                $idsection = $fila->section_idsection;
             }
 
     	$this->db->select('*');
-    	$this->db->where('class_idclass',$idclass);
-        $unity = $this->db->get('unity');
+    	$this->db->where('idsection',$idsection);
+        $section = $this->db->get('section');
 
-        return $unity;
+        return $section;
     }
 
     function unity_activities($idunity){
@@ -938,6 +1073,13 @@ function material_has_class(){
     		$idteacher = $fil->class_teacher_idteacher;
     	}
     	return $idteacher;
+    }
+    function unitybyidsection($idsection){
+    	$this->db->select('unity_idunity');
+    	$this->db->where('section_idsection', $idsection);
+    	$list = $this->db->get('unity_has_section');
+
+    	return $list;
     }
 
 

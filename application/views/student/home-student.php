@@ -17,14 +17,14 @@
 <!-- BODY PAGE AND BUTTON LIST-->
       <div class="row">
         <div class="col s12 m3">
-          <?php $i = 0; foreach ($unity as $filunity):?>
+          <?php $i = 0; foreach ($section as $fil_section):?>
           <div class="card grey darken-3">
             <div class="card-content white-text">
-              <span class="card-title"><i class="material-icons">extension</i> Unit</span>
-              <p><?php echo $filunity->unityname?></p>
+              <span class="card-title">Section <strong><?php echo $fil_section->sectionname?></strong></span>
+              <p></p>
             </div>
             <div class="card-action">
-              <button class="btn blue waves-effect waves" id="btnunity<?php $i?>" onclick="unityactivities(<?php echo $filunity->idunity?>)"><strong>Activities</strong> 
+              <button class="btn blue waves-effect waves" id="btnunity<?php $i?>" onclick="sectionunity(<?php echo $fil_section->idsection?>)"><strong>Unit</strong> 
               </button>
             </div>
           </div>

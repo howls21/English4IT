@@ -1,33 +1,7 @@
 <br>
 <div class="card-panel z-depth-5">
 
-  <a class="modal-trigger btn waves-effect waves-green grey darken-3" href="#NewClass"><i class="material-icons right">add_box</i><strong> New Class</strong></a>
-  <!-- MODALs News-->
-  <div id="NewClass" class="modal modal-fixed-footer">
-    <div class="modal-content">
-         <h5><strong>New Course</strong></h5>
-         <div class="input-field col s6">
-          <input type="text" class="validate" maxlength="50" data-length="50" required id="classname">
-          <label for="classname">Class Name</label>
-         </div>
-        <div class="input-field col s6">
-          <textarea id="descriptionclasscenter" class="materialize-textarea validate" required maxlength="200" data-length="200" ></textarea>
-          <label for="descriptionclasscenter">Description Center</label>
-        </div>
-        <div class="input-field col s6">
-          <textarea id="descriptionclassleft"  class="materialize-textarea" required maxlength="200" data-length="200"></textarea>
-          <label for="descriptionclassleft">Description left</label>
-        </div>
-        <div class="input-field col s6">
-          <textarea id="descriptionclassright" class="materialize-textarea" required maxlength="200" data-length="200"></textarea>
-          <label for="descriptionclassright">Description Right</label>
-        </div>
-    </div>
-  <div class="modal-footer">
-    <a href="#!" class="modal-action modal-close btn waves-effect waves-green grey darken-3"><i class="material-icons right">expand_more</i><strong> Done</strong></a>
-    <a href="#!" class="modal-action modal-close btn waves-effect waves-green green darken-1" onclick="saveclass()"><i class="material-icons right">save</i><strong> Save</strong></a>
-  </div>
-</div>
+ 
 
 <br>
     <?php if ($class == 0): ?><p>Don't Class!</p><?php else: ?>
@@ -66,8 +40,7 @@
                                     <?php $o++; endforeach;?>
                     </div>
                     <div class="card-action">
-                      <button class="modal-trigger btn waves-effect waves-green grey lighten-3 black-text" id="btneditclasstable<?php echo $i ?>" style="cursor: pointer;" href="#Modal_edit_class<?php echo $i ?>" data-tooltip="Edit Class"><i class="material-icons right">edit</i>Edit</button>
-                      <button class="btn modal-trigger red" id="btnclassdeletemodal<?php echo $i ?>" style="cursor: pointer;" href="#Modal_delete_class<?php echo $i ?>" data-tooltip="Delete Class"><i class="material-icons right">delete</i>Delete</button>
+
                     </div>
                   </div>
                 </div>

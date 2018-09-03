@@ -42,8 +42,7 @@
                 
                   </div>
                   <div class="card-action">
-                    <button class="btn modal-trigger white black-text pulse"><i class="material-icons right">edit</i>Edit</button>
-                      <button class="btn red modal-trigger pulse"><i class="material-icons right">delete</i> Delete</button>
+
                   </div>
            </div>
         <?php endif;?>
@@ -85,8 +84,7 @@
                     <?php $r++; endforeach;?>
                   </div>
                   <div class="card-action">
-                    <button class="btn modal-trigger white black-text pulse"><i class="material-icons right">edit</i>Edit</button>
-              <button class="btn red modal-trigger pulse"><i class="material-icons right">delete</i> Delete</button>
+
                </div>
                 </div>
         <?php endif;?>
@@ -126,8 +124,7 @@
                     <?php $r++; endforeach;?>
             </div>
             <div class="card-action">
-              <button class="btn modal-trigger white black-text pulse"><i class="material-icons right">edit</i>Edit</button>
-              <button class="btn red modal-trigger pulse"><i class="material-icons right">delete</i> Delete</button>
+              
             </div>
           </div>
         <?php endif;?>
@@ -177,8 +174,7 @@
                     <?php $r++; endforeach;?>
             </div>
             <div class="card-action">
-              <button class="btn modal-trigger white black-text pulse"><i class="material-icons right">edit</i>Edit</button>
-              <button class="btn red modal-trigger pulse"><i class="material-icons right">delete</i> Delete</button>
+
             </div>
           </div>
         <?php endif;?>

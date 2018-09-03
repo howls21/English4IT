@@ -1,32 +1,6 @@
 <div class="card-panel z-depth-5">
-    <a class="modal-trigger btn waves-effect waves-green grey darken-3" href="#NewUnity"><i class="material-icons right">add_box</i><strong> New Unit</strong></a>
     <button class="btn modal-trigger" href="#unityhassection"><i class="material-icons right">playlist_add_check</i> Add Unity to Section</button>
-    <div id="NewUnity" class="modal modal-fixed-footer">
-      <div class="modal-content">
-                <h4><strong>NEW UNIT</strong></h4>
-                <div class="input-field col s6">
-                    <input type="text" class="validate" data-length="45" maxlength="45" required id="unityname" value="">
-                    <label for="unityname">UNITY NAME</label>
-                </div>
-                <div class="input-field col s6">
-                    <textarea id="descriptionunitycenter" class="materialize-textarea validate" required data-length="200" maxlength="200" ></textarea>
-                    <label for="descriptionunitycenter">DESCRIPTION UNITY CENTER</label>
-                </div>
-                <div class="input-field col s6">
-                    <textarea id="descriptionunityleft"  class="materialize-textarea" required data-length="200" maxlength="200" ></textarea>
-                    <label for="descriptionunityleft">DESCRIPTION UNITY LEFT</label>
-                </div>
-
-                <div class="input-field col s6">
-                    <textarea id="descriptionunityright" class="materialize-textarea" required data-length="200" maxlength="200" ></textarea>
-                    <label for="descriptionunityright">DESCRIPTION UNITY RIGHT</label>
-                </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="modal-trigger modal-close btn waves-effect waves-green grey lighten-3 black-text"><i class="material-icons right">expand_more</i><strong> Done</strong></button>
-          <button type="button" class="btn modal-trigger modal-close green darken-1" id="btnsaveunity" onclick="saveunity()"><i class="material-icons right">save</i><strong> Save</strong></button>
-        </div>
-      </div>
+   
 
 
 <p class=""><input type="checkbox" class="filled-in" id="unitycheckedall"/>
@@ -39,7 +13,7 @@
         <?php $i = 0; foreach ($unity as $filunity):?>
         <?php $checkcount = $i?>
             <div class="row">
-                <div class="col s12 m12">
+                <div class="col s12 m6">
                   <div class="card blue-grey lighten-5 z-depth-5">
                     <div class="card-content">
                         <p>
@@ -63,7 +37,7 @@
                                           <?php $section_idsection = $filuhs->section_idsection?>
                                           <?php $unity_idunity = $filuhs->unity_idunity ?>
                                           <?php echo $fil_section->sectionname ?>
-                                          <i id="idsp<?php echo $i?>" onclick="deleterelunitysection(<?php echo $section_idsection?>,<?php echo $unity_idunity?>)" class="close material-icons" >close</i>
+                                          <i id="idsp<?php echo $i?>" onclick="deleterelunitysectionteacher(<?php echo $section_idsection?>,<?php echo $unity_idunity?>)" class="close material-icons" >close</i>
                                         </span>
                                       </div>
 
@@ -88,8 +62,7 @@
                         
                     </div>
                     <div class="card-action">
-                      <button class="modal-trigger btn waves-effect waves-green grey lighten-3 black-text" id="btneditunittable<?php echo $i ?>" style="cursor: pointer;" href="#ModalEditunit<?php echo $i ?>" data-tooltip="Edit Unit"><i class="material-icons right">edit</i>Edit </button>
-                      <button class="btn red modal-trigger" id="btnunitydeletemodal<?php echo $i ?>" style="cursor: pointer;" href="#Modal_delete_unity<?php echo $i ?>" data-tooltip="Delete Class"><i class="material-icons right">delete</i>Delete </button>
+                      
                     </div>
                   </div>
                 </div>
@@ -167,7 +140,7 @@
         </div>
         <div class="modal-footer">
           <a class="modal-action modal-close btn waves-effect waves-green grey darken-3"><i class="material-icons right">expand_more</i><strong> Done</strong></a>
-          <a id="btnstudentclass" class="modal-action modal-close btn waves-effect waves-green green darken-1" onclick="unitysavesection(<?php echo $checkcount?>)"><i class="material-icons right">save</i><strong> Save</strong></a>
+          <a id="btnstudentclass" class="modal-action modal-close btn waves-effect waves-green green darken-1" onclick="unitysavesectionteacher(<?php echo $checkcount?>)"><i class="material-icons right">save</i><strong> Save</strong></a>
         </div>
       </div>
 </div>
